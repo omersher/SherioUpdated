@@ -1,0 +1,21 @@
+﻿<Window x:Class="SherioAppDesign.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Sherio"
+        Height="450" Width="800"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        AllowsTransparency="True"
+        Background="Transparent"
+        FlowDirection="RightToLeft">
+
+    <Border CornerRadius="35"
+            Background="#FFF9F9F9"
+            SnapsToDevicePixels="True">
+
+        <Frame x:Name="MainFrame"
+               Source="Home.xaml"
+               NavigationUIVisibility="Hidden"/>
+    </Border>
+
+</Window>

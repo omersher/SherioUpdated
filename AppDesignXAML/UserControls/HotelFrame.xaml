@@ -1,0 +1,75 @@
+﻿<UserControl x:Class="AppDesignXAML.UserControls.HotelFrame"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             d:DesignWidth="300"
+             d:DesignHeight="240">
+
+    <Border CornerRadius="16"
+            Background="White"
+            BorderBrush="#E5E7EB"
+            BorderThickness="1"
+            Margin="10">
+
+        <!-- Shadow -->
+        <Border.Effect>
+            <DropShadowEffect BlurRadius="20"
+                              ShadowDepth="4"
+                              Opacity="0.25"/>
+        </Border.Effect>
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Hotel Image -->
+            <Border Grid.Row="0"
+                    CornerRadius="16 16 0 0"
+                    ClipToBounds="True">
+
+                <Image Source="{Binding ImageUrl}"
+                       Stretch="UniformToFill"/>
+            </Border>
+
+            <!-- Info -->
+            <StackPanel Grid.Row="1">
+
+                <!-- Hotel Name -->
+                <TextBlock Text="{Binding HotelName}"
+                           FontSize="16"
+                           FontWeight="SemiBold"
+                           Foreground="#111827"
+                           TextTrimming="CharacterEllipsis"/>
+
+                <!-- City -->
+                <TextBlock Text="{Binding CityName}"
+                           FontSize="13"
+                           Foreground="#6B7280"
+                           Margin="0 2 0 6"/>
+
+                <!-- Stars -->
+                <StackPanel Orientation="Horizontal">
+
+                    <ItemsControl ItemsSource="{Binding Stars}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="★"
+                                           FontSize="14"
+                                           Foreground="#F59E0B"
+                                           Margin="0 0 2 0"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+
+            </StackPanel>
+
+        </Grid>
+    </Border>
+</UserControl>

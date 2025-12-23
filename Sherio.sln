@@ -1,0 +1,61 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36408.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "ClassLibrary\Model.csproj", "{5E55E573-2C86-4A42-A02F-724F01C377EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViewModel", "ViewModel\ViewModel.csproj", "{AA1FC29F-255A-4D60-A51A-5A10B2C81152}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTest", "MyTest\MyTest.csproj", "{9493FBFD-856C-41BB-B55A-55CDC78F265E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SherioWebApplication", "WebApp\SherioWebApplication.csproj", "{2AB0C923-BD20-4984-BFDB-9203EA01E476}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiInterface", "ApiInterface\ApiInterface.csproj", "{02BAD489-F00E-4E7F-9095-6A8D4E3CAA89}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SherioConsoleApp", "SherioConsoleApp\SherioConsoleApp.csproj", "{26AEBE8C-C558-45DC-9D0F-32B76FA0F463}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppDesignXAML", "AppDesignXAML\AppDesignXAML.csproj", "{E5E83E39-1803-49A9-B7D9-BBCB0AF00D77}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5E55E573-2C86-4A42-A02F-724F01C377EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E55E573-2C86-4A42-A02F-724F01C377EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E55E573-2C86-4A42-A02F-724F01C377EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E55E573-2C86-4A42-A02F-724F01C377EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA1FC29F-255A-4D60-A51A-5A10B2C81152}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA1FC29F-255A-4D60-A51A-5A10B2C81152}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA1FC29F-255A-4D60-A51A-5A10B2C81152}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA1FC29F-255A-4D60-A51A-5A10B2C81152}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9493FBFD-856C-41BB-B55A-55CDC78F265E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9493FBFD-856C-41BB-B55A-55CDC78F265E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9493FBFD-856C-41BB-B55A-55CDC78F265E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9493FBFD-856C-41BB-B55A-55CDC78F265E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AB0C923-BD20-4984-BFDB-9203EA01E476}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AB0C923-BD20-4984-BFDB-9203EA01E476}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AB0C923-BD20-4984-BFDB-9203EA01E476}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AB0C923-BD20-4984-BFDB-9203EA01E476}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02BAD489-F00E-4E7F-9095-6A8D4E3CAA89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02BAD489-F00E-4E7F-9095-6A8D4E3CAA89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02BAD489-F00E-4E7F-9095-6A8D4E3CAA89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02BAD489-F00E-4E7F-9095-6A8D4E3CAA89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26AEBE8C-C558-45DC-9D0F-32B76FA0F463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26AEBE8C-C558-45DC-9D0F-32B76FA0F463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26AEBE8C-C558-45DC-9D0F-32B76FA0F463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26AEBE8C-C558-45DC-9D0F-32B76FA0F463}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5E83E39-1803-49A9-B7D9-BBCB0AF00D77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5E83E39-1803-49A9-B7D9-BBCB0AF00D77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5E83E39-1803-49A9-B7D9-BBCB0AF00D77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5E83E39-1803-49A9-B7D9-BBCB0AF00D77}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A6ADD8E-12E9-4CE6-A886-9D4F1127C2EC}
+	EndGlobalSection
+EndGlobal

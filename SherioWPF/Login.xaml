@@ -1,0 +1,175 @@
+﻿<Page x:Class="SherioWPF.Login"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:SherioWPF"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      mc:Ignorable="d"
+      Background="White"
+      Title="Login">
+
+    <!-- CUSTOM BUTTONS THAT ALWAYS WORK -->
+    <Page.Resources>
+
+        <!-- Elevated login button -->
+        <Style x:Key="LoginButton" TargetType="Button">
+            <Setter Property="Padding" Value="12 6"/>
+            <Setter Property="Background" Value="#D94448"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="6" ShadowDepth="2" Color="#55000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Round exit button -->
+        <Style x:Key="ExitButton" TargetType="Button">
+            <Setter Property="Width" Value="50"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#D94448"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="25"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+    </Page.Resources>
+
+
+    <Grid>
+
+        <!-- Background gradient -->
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0.1,0" EndPoint="0.9,1">
+                <GradientStop Color="#FFE63070" Offset="1"/>
+                <GradientStop Color="#FFFE8704" Offset="0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <Border Height="390"
+                VerticalAlignment="Top"
+                Background="White"
+                CornerRadius="0 0 180 0"/>
+
+        <StackPanel Orientation="Horizontal">
+
+            <!-- Image -->
+            <StackPanel Width="350">
+                <Image Source="HotelOfLogin.png"
+                       Width="501" Height="432"
+                       Margin="30"/>
+            </StackPanel>
+
+            <!-- Login controls -->
+            <StackPanel Width="350">
+                <StackPanel Margin="20 40">
+
+                    <TextBlock Text="התחברות"
+                               Margin="20"
+                               Foreground="Black"
+                               FontSize="38"
+                               HorizontalAlignment="Center"/>
+
+                    <!-- USERNAME -->
+                    <Border CornerRadius="12"
+                            Background="White"
+                            BorderThickness="1.5"
+                            BorderBrush="#B8B8B8"
+                            Padding="8"
+                            Margin="10">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <materialDesign:PackIcon Kind="User"
+                                                     Width="22" Height="22"
+                                                     Foreground="#555"/>
+
+                            <TextBox x:Name="txtUsername"
+                                     Grid.Column="1"
+                                     Foreground="Black"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     FontSize="15"
+                                     materialDesign:HintAssist.Hint="Username"/>
+                        </Grid>
+
+                    </Border>
+
+                    <!-- PASSWORD -->
+                    <Border CornerRadius="12"
+                            Background="White"
+                            BorderThickness="1.5"
+                            BorderBrush="#B8B8B8"
+                            Padding="8"
+                            Margin="10">
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <materialDesign:PackIcon Kind="Lock"
+                                                     Width="22" Height="22"
+                                                     Foreground="#555"/>
+
+                            <PasswordBox x:Name="txtPassword"
+                                         Grid.Column="1"
+                                         Foreground="Black"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         FontSize="15"
+                                         materialDesign:HintAssist.Hint="Password"/>
+                        </Grid>
+
+                    </Border>
+
+                    <!-- LOGIN BUTTON -->
+                    <Button Width="120"
+                            Height="40"
+                            HorizontalAlignment="Center"
+                            Style="{StaticResource LoginButton}"
+                            Content="התחברות"
+                            Click="btnLogin_Click"/>
+
+                </StackPanel>
+            </StackPanel>
+
+            <!-- EXIT BUTTON -->
+            <StackPanel Width="100">
+                <Button Style="{StaticResource ExitButton}"
+                        Margin="10 20"
+                        Click="btnExit_Click">
+
+                    <materialDesign:PackIcon Kind="Close"
+                                             Foreground="#D94448"
+                                             Width="25" Height="25"/>
+
+                </Button>
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+
+</Page>

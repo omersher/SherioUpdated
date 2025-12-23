@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "SherioAppDesign\\SherioAppDesign.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]
