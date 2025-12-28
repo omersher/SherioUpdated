@@ -1,21 +1,24 @@
 ﻿<Page x:Class="AppDesignXAML.pages.Home"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      FlowDirection="RightToLeft">
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      FlowDirection="RightToLeft"
+      Title="Home">
 
-    
-    <Grid>
+    <Grid d:DesignHeight="500" d:DesignWidth="800">
 
-        <!-- Background -->
+        <!-- BACKGROUND -->
         <Grid.Background>
             <ImageBrush ImageSource="/Images/backgroundColor.jpg"
                         Stretch="UniformToFill"/>
         </Grid.Background>
 
-        <!-- Dark overlay -->
         <Border Background="#66000000"/>
 
-        <!-- Login -->
+        <!-- LOGIN -->
         <Button HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 Margin="20"
@@ -32,6 +35,7 @@
             </StackPanel>
         </Button>
 
+        <!-- MAIN LAYOUT -->
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*"/>
@@ -39,10 +43,10 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <!-- Title -->
+            <!-- HERO TEXT -->
             <StackPanel Grid.Row="0"
-                        VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
                 <TextBlock Text="הטיול הבא שלך מתחיל כאן"
                            FontSize="38"
                            FontWeight="SemiBold"
@@ -53,7 +57,7 @@
                            Margin="0 10 0 0"/>
             </StackPanel>
 
-            <!-- Search Card -->
+            <!-- SEARCH CARD -->
             <Border Grid.Row="1"
                     Width="760"
                     Padding="28"
@@ -72,7 +76,7 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <!-- Destination -->
+                    <!-- DESTINATION -->
                     <Border x:Name="DestinationBox"
                             CornerRadius="12"
                             BorderBrush="#D1D5DB"
@@ -94,7 +98,7 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Dates -->
+                    <!-- DATES -->
                     <Border x:Name="DatesBox"
                             Grid.Column="1"
                             CornerRadius="12"
@@ -117,7 +121,7 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Guests -->
+                    <!-- GUESTS -->
                     <Border x:Name="GuestsBox"
                             Grid.Column="2"
                             CornerRadius="12"
@@ -140,28 +144,29 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Search -->
+                    <!-- SEARCH BUTTON -->
                     <Button Grid.Column="3"
-                            Content="חיפוש"
+                            Content="חפש"
                             Width="120"
                             Height="54"
+                            Style="{StaticResource MaterialDesignRaisedButton}"
                             Background="#E11D48"
                             Foreground="White"
                             FontSize="16"
                             FontWeight="SemiBold"
                             BorderThickness="0"
                             Cursor="Hand"
-                            Margin="14 0 0 0"/>
+                            Margin="14 0 0 0"
+                            Click="Button_Click"/>
                 </Grid>
             </Border>
 
-            <!-- ================= POPUPS ================= -->
-
-            <!-- Cities -->
+            <!-- CITIES POPUP -->
             <Popup x:Name="CitiesPopup"
                    PlacementTarget="{Binding ElementName=DestinationBox}"
                    Placement="Bottom"
-                   StaysOpen="False">
+                   StaysOpen="False"
+                   AllowsTransparency="True">
                 <Border Background="White"
                         Width="260"
                         CornerRadius="14"
@@ -181,25 +186,32 @@
                 </Border>
             </Popup>
 
-            <!-- Dates -->
+            <!-- DATES POPUP -->
             <Popup x:Name="DatesPopup"
                    PlacementTarget="{Binding ElementName=DatesBox}"
                    Placement="Bottom"
-                   StaysOpen="False">
+                   StaysOpen="False"
+                   AllowsTransparency="True">
                 <Border Background="White"
                         CornerRadius="16"
                         BorderBrush="#D1D5DB"
                         BorderThickness="1"
                         Padding="16"
-                        Width="360">
+                        Width="380">
                     <StackPanel>
                         <TextBlock Text="בחר תאריכים"
                                    FontSize="16"
                                    FontWeight="SemiBold"
+                                   HorizontalAlignment="Center"
                                    Margin="0 0 0 10"/>
+
                         <Calendar x:Name="CalendarRange"
-                                  SelectionMode="SingleRange"/>
+                                  SelectionMode="SingleRange"
+                                  materialDesign:CalendarAssist.HeaderBackground="#673AB7"
+                                  materialDesign:CalendarAssist.HeaderForeground="White"/>
+
                         <Button Content="אישור"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
                                 Height="40"
                                 Margin="0 10 0 0"
                                 Background="#2563EB"
@@ -211,59 +223,128 @@
                 </Border>
             </Popup>
 
-            <!-- Guests -->
+            <!-- GUESTS POPUP -->
             <Popup x:Name="GuestsPopup"
-                   PlacementTarget="{Binding ElementName=GuestsBox}"
-                   Placement="Bottom"
-                   StaysOpen="False">
+       PlacementTarget="{Binding ElementName=GuestsBox}"
+       Placement="Bottom"
+       StaysOpen="False"
+       AllowsTransparency="True">
+
                 <Border Background="White"
-                        CornerRadius="16"
-                        BorderBrush="#D1D5DB"
-                        BorderThickness="1"
-                        Padding="16"
-                        Width="260">
+            CornerRadius="16"
+            BorderBrush="#D1D5DB"
+            BorderThickness="1"
+            Padding="16"
+            Width="320">
+
+                    <!-- ✅ RESOURCES FIRST -->
+                    <Border.Resources>
+
+                        <Style x:Key="CounterButtonStyle"
+                   TargetType="Button"
+                   BasedOn="{StaticResource MaterialDesignFlatButton}">
+                            <Setter Property="Width" Value="36"/>
+                            <Setter Property="Height" Value="36"/>
+                            <Setter Property="FontSize" Value="18"/>
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <Setter Property="Background" Value="#F3F4F6"/>
+                            <Setter Property="Foreground" Value="#1F2937"/>
+                            <Setter Property="BorderThickness" Value="0"/>
+                            <Setter Property="materialDesign:ButtonAssist.CornerRadius" Value="18"/>
+                        </Style>
+
+                        <Style x:Key="CounterLabelStyle" TargetType="TextBlock">
+                            <Setter Property="Width" Value="80"/>
+                            <Setter Property="FontSize" Value="16"/>
+                            <Setter Property="FontWeight" Value="Medium"/>
+                            <Setter Property="Foreground" Value="#1F2937"/>
+                        </Style>
+
+                        <Style x:Key="CounterValueStyle" TargetType="TextBlock">
+                            <Setter Property="Width" Value="50"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                            <Setter Property="FontSize" Value="18"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Foreground" Value="#111827"/>
+                        </Style>
+
+                    </Border.Resources>
+
+                    <!-- ✅ CONTENT -->
                     <StackPanel>
 
-                        <!-- Adults -->
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                            <TextBlock Text="מבוגרים" Width="90"/>
-                            <Button Content="−" Width="30" Click="AdultsMinus_Click"/>
-                            <TextBlock x:Name="AdultsText"
-                                       Text="2"
-                                       Width="30"
-                                       TextAlignment="Center"/>
-                            <Button Content="+" Width="30" Click="AdultsPlus_Click"/>
-                        </StackPanel>
+                        <TextBlock Text="בחירת נוסעים וחדרים"
+                       FontSize="16"
+                       FontWeight="SemiBold"
+                       HorizontalAlignment="Center"
+                       Margin="0 0 0 16"/>
 
-                        <!-- Kids -->
-                        <StackPanel Orientation="Horizontal" Margin="0 0 0 10">
-                            <TextBlock Text="ילדים" Width="90"/>
-                            <Button Content="−" Width="30" Click="KidsMinus_Click"/>
-                            <TextBlock x:Name="KidsText"
-                                       Text="0"
-                                       Width="30"
-                                       TextAlignment="Center"/>
-                            <Button Content="+" Width="30" Click="KidsPlus_Click"/>
-                        </StackPanel>
+                        <!-- ADULTS -->
+                        <Grid Margin="0 0 0 12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
 
-                        <!-- Rooms -->
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="חדרים" Width="90"/>
-                            <Button Content="−" Width="30" Click="RoomsMinus_Click"/>
-                            <TextBlock x:Name="RoomsText"
-                                       Text="1"
-                                       Width="30"
-                                       TextAlignment="Center"/>
-                            <Button Content="+" Width="30" Click="RoomsPlus_Click"/>
-                        </StackPanel>
+                            <TextBlock Text="מבוגרים"
+                           Grid.Column="0"
+                           Style="{StaticResource CounterLabelStyle}"
+                           HorizontalAlignment="Right"/>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <Button Content="−" Style="{StaticResource CounterButtonStyle}" Click="AdultsMinus_Click"/>
+                                <TextBlock x:Name="AdultsText" Text="2" Style="{StaticResource CounterValueStyle}"/>
+                                <Button Content="+" Style="{StaticResource CounterButtonStyle}" Click="AdultsPlus_Click"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- KIDS -->
+                        <Grid Margin="0 0 0 12">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="ילדים"
+                           Grid.Column="0"
+                           Style="{StaticResource CounterLabelStyle}"
+                           HorizontalAlignment="Right"/>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <Button Content="−" Style="{StaticResource CounterButtonStyle}" Click="KidsMinus_Click"/>
+                                <TextBlock x:Name="KidsText" Text="0" Style="{StaticResource CounterValueStyle}"/>
+                                <Button Content="+" Style="{StaticResource CounterButtonStyle}" Click="KidsPlus_Click"/>
+                            </StackPanel>
+                        </Grid>
+
+                        <!-- ROOMS -->
+                        <Grid Margin="0 0 0 20">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBlock Text="חדרים"
+                           Grid.Column="0"
+                           Style="{StaticResource CounterLabelStyle}"
+                           HorizontalAlignment="Right"/>
+
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <Button Content="−" Style="{StaticResource CounterButtonStyle}" Click="RoomsMinus_Click"/>
+                                <TextBlock x:Name="RoomsText" Text="1" Style="{StaticResource CounterValueStyle}"/>
+                                <Button Content="+" Style="{StaticResource CounterButtonStyle}" Click="RoomsPlus_Click"/>
+                            </StackPanel>
+                        </Grid>
 
                         <Button Content="אישור"
-                                Margin="0 12 0 0"
-                                Height="36"
-                                Background="#2563EB"
-                                Foreground="White"
-                                BorderThickness="0"
-                                Click="GuestsConfirm_Click"/>
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Height="40"
+                    Background="#2563EB"
+                    Foreground="White"
+                    FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Click="GuestsConfirm_Click"/>
+
                     </StackPanel>
                 </Border>
             </Popup>

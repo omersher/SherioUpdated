@@ -2,19 +2,22 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Model;
-using ViewModel;
+using Model; // ודא שאתה משתמש ב-namespace הנכון עבור City ו-CityDB
+using ViewModel; // ודא שאתה משתמש ב-namespace הנכון
 
 namespace AppDesignXAML.pages
 {
     public partial class Home : Page
     {
+        // הערכים ההתחלתיים נטענים אוטומטית בהפעלה
         int adults = 2, kids = 0, rooms = 1;
 
         public Home()
         {
             InitializeComponent();
+            // ודא שהאובייקט CityDB זמין
             CitiesList.ItemsSource = new CityDB().SelectAll();
+            UpdateGuestsText(); // קוראים לזה כדי להציג את הערכים ההתחלתיים ב-GuestsText
         }
 
         // ===== Cities =====
@@ -43,6 +46,7 @@ namespace AppDesignXAML.pages
             if (CalendarRange.SelectedDates.Count > 0)
             {
                 var start = CalendarRange.SelectedDates[0];
+                // שימוש באופרטור ה-Index החדש (^)
                 var end = CalendarRange.SelectedDates[^1];
                 DatesText.Text = $"{start:dd/MM} – {end:dd/MM}";
                 DatesPopup.IsOpen = false;
@@ -57,7 +61,9 @@ namespace AppDesignXAML.pages
 
         private void UpdateGuestsText()
         {
+            // עדכון הטקסט הראשי
             GuestsText.Text = $"{adults + kids} נוסעים · חדר {rooms}";
+            // עדכון הטקסטים בתוך ה-Popup
             AdultsText.Text = adults.ToString();
             KidsText.Text = kids.ToString();
             RoomsText.Text = rooms.ToString();
@@ -72,6 +78,11 @@ namespace AppDesignXAML.pages
         private void RoomsPlus_Click(object sender, RoutedEventArgs e) { rooms++; UpdateGuestsText(); }
         private void RoomsMinus_Click(object sender, RoutedEventArgs e) { if (rooms > 1) rooms--; UpdateGuestsText(); }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // לוגיקת חיפוש
+        }
+
         private void GuestsConfirm_Click(object sender, RoutedEventArgs e)
         {
             GuestsPopup.IsOpen = false;
@@ -79,6 +90,7 @@ namespace AppDesignXAML.pages
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
+            // ודא שהמחלקה Login קיימת ב-namespace AppDesignXAML.pages
             NavigationService.Navigate(new Login());
         }
     }

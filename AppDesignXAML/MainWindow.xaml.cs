@@ -26,5 +26,9 @@ namespace AppDesignXAML
             Application.Current.Shutdown();
         }
 
+        private void MainFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+
+        }
     }
 }
