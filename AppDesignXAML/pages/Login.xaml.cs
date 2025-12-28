@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using Model;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Model;
 using ViewModel;
 
 namespace AppDesignXAML.pages
@@ -15,35 +15,47 @@ namespace AppDesignXAML.pages
 
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            string email = EmailBox.Text;
-            string password = PasswordBoxInput.Password;
+            PasswordErrorText.Visibility = Visibility.Collapsed;
+            PasswordBoxInput.BorderBrush = System.Windows.Media.Brushes.LightGray;
 
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            if (string.IsNullOrWhiteSpace(EmailBox.Text) ||
+                string.IsNullOrWhiteSpace(PasswordBoxInput.Password))
             {
-                MessageBox.Show("נא למלא אימייל וסיסמה");
+                ShowError("נא למלא אימייל וסיסמה");
                 return;
             }
 
             UserDB db = new UserDB();
             UserList users = db.SelectAll();
 
-            User user = users
-                .FirstOrDefault(u => u.Email == email && u.PassHash == password);
+            var user = users.FirstOrDefault(u =>
+                u.Email == EmailBox.Text &&
+                u.PassHash == PasswordBoxInput.Password);
 
             if (user == null)
             {
-                MessageBox.Show("אימייל או סיסמה שגויים");
+                ShowError("אימייל או סיסמה שגויים");
                 return;
             }
 
-            MessageBox.Show($"ברוך הבא {user.FullName}");
-
             NavigationService.Navigate(new Home());
+        }
+
+        private void ShowError(string message)
+        {
+            PasswordErrorText.Text = message;
+            PasswordErrorText.Visibility = Visibility.Visible;
+            PasswordBoxInput.BorderBrush = System.Windows.Media.Brushes.Red;
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Register());
+        }
+
+        private void EmailBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

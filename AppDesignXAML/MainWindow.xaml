@@ -9,7 +9,7 @@
         Background="Transparent"
         ResizeMode="NoResize"
         Width="800"
-        Height="450">
+        Height="500">
 
     <Window.Resources>
         <Style TargetType="ScrollBar">

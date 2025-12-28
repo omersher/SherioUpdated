@@ -26,6 +26,7 @@
     <Resource Include="Images\backgroundColor.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="Images\hotelLogin.jpg" />
   </ItemGroup>
 
 </Project>
