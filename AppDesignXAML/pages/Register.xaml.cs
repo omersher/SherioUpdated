@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using Model;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Windows;
 using System.Windows.Controls;
-using Model;
 using ViewModel;
 
 namespace AppDesignXAML.pages
@@ -12,33 +14,48 @@ namespace AppDesignXAML.pages
             InitializeComponent();
         }
 
-        private void CreateAccount_Click(object sender, RoutedEventArgs e)
+        private async void CreateAccount_Click(object sender, RoutedEventArgs e)
         {
-            // בדיקות בסיס
-            if (string.IsNullOrWhiteSpace(FullNameBox.Text) ||
-                string.IsNullOrWhiteSpace(EmailBox.Text) ||
-                string.IsNullOrWhiteSpace(PasswordBox.Password))
+            try
             {
-                MessageBox.Show("נא למלא את כל השדות החיוניים");
-                return;
+                User newUser = new User
+                {
+                    FullName = FullNameBox.Text,
+                    GuestID = GuestIdBox.Text,   // ← תיקון
+                    Email = EmailBox.Text,
+                    Phone = PhoneBox.Text,
+                    PassHash = PasswordBox.Password
+                };
+
+                HttpClient client = new HttpClient
+                {
+                    BaseAddress = new Uri("http://localhost:5064/")
+                };
+
+                HttpResponseMessage response =
+                    await client.PostAsJsonAsync("api/Users/Insert", newUser);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("שגיאה בהרשמה");
+                    return;
+                }
+
+                MessageBox.Show("נרשמת בהצלחה!");
+                NavigationService.Navigate(new Login());
             }
-
-            User user = new User
+            catch
             {
-                FullName = FullNameBox.Text,
-                GuestID = GuestIdBox.Text,
-                Email = EmailBox.Text,
-                Phone = PhoneBox.Text,
-                PassHash = PasswordBox.Password
-            };
-
-            UserDB db = new UserDB();
-            db.Insert(user);
-
-            MessageBox.Show("נרשמת בהצלחה!");
-
-            // חזרה ללוגין
-            NavigationService.Navigate(new Login());
+                MessageBox.Show("שגיאה בהתחברות לשרת");
+            }
         }
+
+
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Login());
+
+        }
+
     }
 }

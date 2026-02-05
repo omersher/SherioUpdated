@@ -1,61 +1,75 @@
 ﻿using Model;
-using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Windows;
 using System.Windows.Controls;
-using ViewModel;
 
 namespace AppDesignXAML.pages
 {
     public partial class Login : Page
     {
+        HttpClient client = new HttpClient
+        {
+            BaseAddress = new System.Uri("http://localhost:5064/")
+        };
+
         public Login()
         {
             InitializeComponent();
         }
 
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
             PasswordErrorText.Visibility = Visibility.Collapsed;
-            PasswordBoxInput.BorderBrush = System.Windows.Media.Brushes.LightGray;
 
-            if (string.IsNullOrWhiteSpace(EmailBox.Text) ||
-                string.IsNullOrWhiteSpace(PasswordBoxInput.Password))
+            try
             {
-                ShowError("נא למלא אימייל וסיסמה");
-                return;
+                using HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri("http://localhost:5064/");
+
+                string json =
+                    $"{{ \"email\": \"{EmailBox.Text.Trim()}\", \"passHash\": \"{PasswordBoxInput.Password.Trim()}\" }}";
+
+                var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response =
+                    await client.PostAsync("api/Users/Login", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ((MainWindow)Application.Current.MainWindow)
+                        .MainFrame.Navigate(new Home());
+                    return;
+                }
+
+                PasswordErrorText.Text = "אימייל או סיסמה שגויים";
+                PasswordErrorText.Visibility = Visibility.Visible;
             }
-
-            UserDB db = new UserDB();
-            UserList users = db.SelectAll();
-
-            var user = users.FirstOrDefault(u =>
-                u.Email == EmailBox.Text &&
-                u.PassHash == PasswordBoxInput.Password);
-
-            if (user == null)
+            catch (Exception ex)
             {
-                ShowError("אימייל או סיסמה שגויים");
-                return;
+                PasswordErrorText.Text = "שגיאה בהתחברות לשרת";
+                PasswordErrorText.Visibility = Visibility.Visible;
             }
-
-            NavigationService.Navigate(new Home());
         }
+
 
         private void ShowError(string message)
         {
             PasswordErrorText.Text = message;
             PasswordErrorText.Visibility = Visibility.Visible;
-            PasswordBoxInput.BorderBrush = System.Windows.Media.Brushes.Red;
+        }
+
+        private void ClearErrors()
+        {
+            PasswordErrorText.Text = "";
+            PasswordErrorText.Visibility = Visibility.Collapsed;
         }
 
         private void Register_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new Register());
-        }
-
-        private void EmailBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
 
         }
+
     }
 }

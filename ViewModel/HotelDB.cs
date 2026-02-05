@@ -23,6 +23,15 @@ namespace ViewModel
             return list.Count > 0 ? list[0] : null;
         }
 
+        public HotelList SelectByOwnerId(int ownerId)
+        {
+            command.CommandText = "SELECT * FROM Hotels WHERE OwnerId=?";
+            command.Parameters.Clear();
+            command.Parameters.Add(new OleDbParameter("@ownerId", ownerId));
+
+            return new HotelList(base.Select());
+        }
+
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
             Hotel h = entity as Hotel ?? new Hotel();
@@ -32,14 +41,23 @@ namespace ViewModel
             h.Email = reader["Email"].ToString();
             h.WebSite = reader["WebSite"].ToString();
             h.StreetAddress = reader["StreetAddress"].ToString();
+            if (reader["MainHotelImageLink"] != DBNull.Value)
+                h.MainHotelImageLink = reader["MainHotelImageLink"].ToString();
+            else
+                h.MainHotelImageLink = "";
 
-            if (reader["OwnerID"] != DBNull.Value) h.Owner = OwnerDB.SelectById(Convert.ToInt32(reader["OwnerID"]));
-            if (reader["CityID"] != DBNull.Value) h.City = CityDB.SelectById(Convert.ToInt32(reader["CityID"]));
-            if (reader["StarRating"] != DBNull.Value) h.StarRating = Convert.ToInt32(reader["StarRating"]);
+            if (reader["OwnerID"] != DBNull.Value)
+                h.Owner = OwnerDB.SelectById(Convert.ToInt32(reader["OwnerID"]));
 
-            h.HasPool = reader["HasPool"] != DBNull.Value && Convert.ToBoolean(reader["HasPool"]);
-            h.HasGym = reader["HasGym"] != DBNull.Value && Convert.ToBoolean(reader["HasGym"]);
-            h.HasRestaurant = reader["HasRestaurant"] != DBNull.Value && Convert.ToBoolean(reader["HasRestaurant"]);
+            if (reader["CityID"] != DBNull.Value)
+                h.City = CityDB.SelectById(Convert.ToInt32(reader["CityID"]));
+
+            if (reader["StarRating"] != DBNull.Value)
+                h.StarRating = Convert.ToInt32(reader["StarRating"]);
+
+            h.HasPool = Convert.ToBoolean(reader["HasPool"]);
+            h.HasGym = Convert.ToBoolean(reader["HasGym"]);
+            h.HasRestaurant = Convert.ToBoolean(reader["HasRestaurant"]);
 
             base.CreateModel(h);
             return h;
@@ -59,8 +77,9 @@ namespace ViewModel
             if (entity is not Hotel h) return;
 
             cmd.CommandText =
-                "INSERT INTO Hotels (Name, PhoneNumber, Email, WebSite, OwnerID, CityID, StreetAddress, StarRating, HasPool, HasGym, HasRestaurant) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+                "INSERT INTO Hotels " +
+                "(Name, PhoneNumber, Email, WebSite, OwnerID, CityID, StreetAddress, StarRating, HasPool, HasGym, HasRestaurant, MainHotelImageLink) " +
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 
             cmd.Parameters.Add(new OleDbParameter("@name", h.Name));
             cmd.Parameters.Add(new OleDbParameter("@phone", h.PhoneNumber));
@@ -73,6 +92,7 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@pool", h.HasPool));
             cmd.Parameters.Add(new OleDbParameter("@gym", h.HasGym));
             cmd.Parameters.Add(new OleDbParameter("@rest", h.HasRestaurant));
+            cmd.Parameters.Add(new OleDbParameter("@img", h.MainHotelImageLink));
         }
 
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
@@ -80,7 +100,8 @@ namespace ViewModel
             if (entity is not Hotel h) return;
 
             cmd.CommandText =
-                "UPDATE Hotels SET Name=?, PhoneNumber=?, Email=?, WebSite=?, OwnerID=?, CityID=?, StreetAddress=?, StarRating=?, HasPool=?, HasGym=?, HasRestaurant=? " +
+                "UPDATE Hotels SET " +
+                "Name=?, PhoneNumber=?, Email=?, WebSite=?, OwnerID=?, CityID=?, StreetAddress=?, StarRating=?, HasPool=?, HasGym=?, HasRestaurant=?, MainHotelImageLink=? " +
                 "WHERE ID=?";
 
             cmd.Parameters.Add(new OleDbParameter("@name", h.Name));
@@ -94,6 +115,7 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@pool", h.HasPool));
             cmd.Parameters.Add(new OleDbParameter("@gym", h.HasGym));
             cmd.Parameters.Add(new OleDbParameter("@rest", h.HasRestaurant));
+            cmd.Parameters.Add(new OleDbParameter("@img", h.MainHotelImageLink));
             cmd.Parameters.Add(new OleDbParameter("@id", h.Id));
         }
     }

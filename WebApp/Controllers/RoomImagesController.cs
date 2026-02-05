@@ -43,5 +43,13 @@ namespace SherioWebApplication.Controllers
             db.Delete(ri);
             return db.SaveChanges();
         }
+
+        [HttpGet("{roomId}")]
+        public RoomImagesList GetByRoomId(int roomId)
+        {
+            RoomImagesDB db = new RoomImagesDB();
+            return db.SelectByRoomId(roomId);
+        }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using AppDesignXAML.pages;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,7 +20,9 @@ namespace AppDesignXAML
         public MainWindow()
         {
             InitializeComponent();
+            MainFrame.Navigate(new pages.Home());
         }
+
 
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
@@ -30,5 +33,7 @@ namespace AppDesignXAML
         {
 
         }
+
+
     }
 }

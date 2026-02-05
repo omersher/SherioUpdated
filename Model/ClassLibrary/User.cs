@@ -7,7 +7,6 @@
         private string email;
         private string phone;
         private string passHash;
-        private bool isOwner; 
 
         public string FullName { get => fullName; set => fullName = value; }
         public string GuestID { get => guestID; set => guestID = value; }
@@ -15,23 +14,10 @@
         public string Phone { get => phone; set => phone = value; }
         public string PassHash { get => passHash; set => passHash = value; }
 
-        // ⭐ OWNER FLAG ⭐
-        public bool IsOwner { get => isOwner; set => isOwner = value; }
-
         public override string ToString()
         {
             return base.ToString() + " | " +
-                   $"User = {FullName}, IsOwner = {IsOwner}";
-        }
-
-        public class UserUpdateDto
-        {
-            public string? FullName { get; set; }
-            public string? GuestID { get; set; }
-            public string? Email { get; set; }
-            public string? Phone { get; set; }
-            public string? PassHash { get; set; }
-            public bool? IsOwner { get; set; }
+                   $"User = {FullName}, Email = {Email}, Phone = {Phone}";
         }
     }
 }

@@ -15,6 +15,13 @@ namespace SherioWebApplication.Controllers
             return db.SelectAll();
         }
 
+        [HttpGet("{ownerId}")]
+        public HotelList GetByOwnerId(int ownerId)
+        {
+            HotelsDB db = new HotelsDB();
+            return db.SelectByOwnerId(ownerId);
+        }
+
         [HttpGet("{id}")]
         public Hotel? GetById(int id) => HotelsDB.SelectById(id);
 

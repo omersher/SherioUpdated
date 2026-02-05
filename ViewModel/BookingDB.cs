@@ -27,13 +27,31 @@ namespace ViewModel
         {
             Booking b = entity as Booking ?? new Booking();
 
-            if (reader["UserID"] != DBNull.Value) b.User = UserDB.SelectById(Convert.ToInt32(reader["UserID"]));
-            if (reader["RoomID"] != DBNull.Value) b.Room = RoomDB.SelectById(Convert.ToInt32(reader["RoomID"]));
-            if (reader["CreatedAt"] != DBNull.Value) b.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
-            if (reader["StartDate"] != DBNull.Value) b.StartDate = Convert.ToDateTime(reader["StartDate"]);
-            if (reader["EndDate"] != DBNull.Value) b.EndDate = Convert.ToDateTime(reader["EndDate"]);
-            if (reader["AdultCount"] != DBNull.Value) b.AdultCount = Convert.ToInt32(reader["AdultCount"]);
-            if (reader["ChildCount"] != DBNull.Value) b.ChildCount = Convert.ToInt32(reader["ChildCount"]);
+            if (reader["UserID"] != DBNull.Value)
+                b.User = UserDB.SelectById(Convert.ToInt32(reader["UserID"]));
+
+            if (reader["RoomID"] != DBNull.Value)
+            {
+                int rid = Convert.ToInt32(reader["RoomID"]); 
+                b.RoomID = rid;                            
+                b.Room = RoomDB.SelectById(rid);
+            }
+
+            if (reader["CreatedAt"] != DBNull.Value)
+                b.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
+
+            if (reader["StartDate"] != DBNull.Value)
+                b.StartDate = Convert.ToDateTime(reader["StartDate"]);
+
+            if (reader["EndDate"] != DBNull.Value)
+                b.EndDate = Convert.ToDateTime(reader["EndDate"]);
+
+            if (reader["AdultCount"] != DBNull.Value)
+                b.AdultCount = Convert.ToInt32(reader["AdultCount"]);
+
+            if (reader["ChildCount"] != DBNull.Value)
+                b.ChildCount = Convert.ToInt32(reader["ChildCount"]);
+
             b.Status = reader["Status"].ToString();
 
             base.CreateModel(b);
@@ -58,7 +76,7 @@ namespace ViewModel
                 "VALUES (?,?,?,?,?,?,?,?)";
 
             cmd.Parameters.Add(new OleDbParameter("@userId", DbVal(b.User?.Id)));
-            cmd.Parameters.Add(new OleDbParameter("@roomId", DbVal(b.Room?.Id)));
+            cmd.Parameters.Add(new OleDbParameter("@roomId", b.RoomID)); // ✅
             cmd.Parameters.Add(new OleDbParameter("@created", b.CreatedAt));
             cmd.Parameters.Add(new OleDbParameter("@start", b.StartDate));
             cmd.Parameters.Add(new OleDbParameter("@end", b.EndDate));
@@ -76,7 +94,7 @@ namespace ViewModel
                 "WHERE ID=?";
 
             cmd.Parameters.Add(new OleDbParameter("@userId", DbVal(b.User?.Id)));
-            cmd.Parameters.Add(new OleDbParameter("@roomId", DbVal(b.Room?.Id)));
+            cmd.Parameters.Add(new OleDbParameter("@roomId", b.RoomID)); // ✅
             cmd.Parameters.Add(new OleDbParameter("@created", b.CreatedAt));
             cmd.Parameters.Add(new OleDbParameter("@start", b.StartDate));
             cmd.Parameters.Add(new OleDbParameter("@end", b.EndDate));

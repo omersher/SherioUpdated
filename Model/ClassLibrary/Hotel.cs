@@ -13,7 +13,6 @@
         private bool hasPool;
         private bool hasGym;
         private bool hasRestaurant;
-        private string mainHotelImageLink; // חדש
 
         public string Name { get => name; set => name = value; }
         public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }
@@ -26,11 +25,12 @@
         public bool HasPool { get => hasPool; set => hasPool = value; }
         public bool HasGym { get => hasGym; set => hasGym = value; }
         public bool HasRestaurant { get => hasRestaurant; set => hasRestaurant = value; }
-        public string MainHotelImageLink { get => mainHotelImageLink; set => mainHotelImageLink = value; }
 
         public override string ToString()
         {
-            return $"{Name} | {City?.CityName} | ⭐ {StarRating}";
+            return base.ToString() + " | " +
+                   $"Hotel = {Name}, City = {City?.CityName}, Stars = {StarRating}, " +
+                   $"Phone = {PhoneNumber}, Email = {Email}";
         }
     }
 }

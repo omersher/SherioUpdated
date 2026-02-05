@@ -1,5 +1,4 @@
-﻿// FILE: UserDB.cs
-using Model;
+﻿using Model;
 using System.Data.OleDb;
 
 namespace ViewModel
@@ -12,15 +11,32 @@ namespace ViewModel
             return new UserList(base.Select());
         }
 
-        public static User SelectById(int id)
+        public static User? SelectById(int id)
         {
             UserDB db = new UserDB();
             db.command.CommandText = "SELECT * FROM Users WHERE ID=?";
             db.command.Parameters.Clear();
             db.command.Parameters.Add(new OleDbParameter("@id", id));
+
             UserList list = new UserList(db.Select());
             return list.Count > 0 ? list[0] : null;
         }
+
+        // ⭐⭐⭐ LOGIN אמיתי מול DB ⭐⭐⭐
+        public User? Login(string email, string pass)
+        {
+            command.CommandText =
+                "SELECT TOP 1 * FROM Users " +
+                "WHERE TRIM(Email)=? AND TRIM(PassHash)=?";
+
+            command.Parameters.Clear();
+            command.Parameters.Add(new OleDbParameter { Value = email.Trim() });
+            command.Parameters.Add(new OleDbParameter { Value = pass.Trim() });
+
+            UserList list = new UserList(base.Select());
+            return list.Count > 0 ? list[0] : null;
+        }
+
 
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
@@ -31,6 +47,7 @@ namespace ViewModel
             u.Email = reader["Email"].ToString();
             u.Phone = reader["Phone"].ToString();
             u.PassHash = reader["PassHash"].ToString();
+            u.IsOwner = reader["IsOwner"] != DBNull.Value && (bool)reader["IsOwner"]; 
 
             base.CreateModel(u);
             return u;
@@ -40,30 +57,29 @@ namespace ViewModel
 
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            if (entity is not User u) return;
+            User u = (User)entity;
             cmd.CommandText = "DELETE FROM Users WHERE ID=?";
             cmd.Parameters.Add(new OleDbParameter("@id", u.Id));
         }
 
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            if (entity is not User u) return;
-
+            User u = (User)entity;
             cmd.CommandText =
-                "INSERT INTO Users (FullName, GuestID, Email, Phone, PassHash) " +
-                "VALUES (?,?,?,?,?)";
+                "INSERT INTO Users (FullName, GuestID, Email, Phone, PassHash) VALUES (?,?,?,?,?)";
 
             cmd.Parameters.Add(new OleDbParameter("@name", u.FullName));
             cmd.Parameters.Add(new OleDbParameter("@guest", u.GuestID));
             cmd.Parameters.Add(new OleDbParameter("@mail", u.Email));
             cmd.Parameters.Add(new OleDbParameter("@phone", u.Phone));
             cmd.Parameters.Add(new OleDbParameter("@pass", u.PassHash));
+            cmd.Parameters.Add(new OleDbParameter("@isOwner", u.IsOwner)); 
+
         }
 
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
-            if (entity is not User u) return;
-
+            User u = (User)entity;
             cmd.CommandText =
                 "UPDATE Users SET FullName=?, GuestID=?, Email=?, Phone=?, PassHash=? WHERE ID=?";
 
@@ -72,6 +88,7 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@mail", u.Email));
             cmd.Parameters.Add(new OleDbParameter("@phone", u.Phone));
             cmd.Parameters.Add(new OleDbParameter("@pass", u.PassHash));
+            cmd.Parameters.Add(new OleDbParameter("@isOwner", u.IsOwner));
             cmd.Parameters.Add(new OleDbParameter("@id", u.Id));
         }
     }

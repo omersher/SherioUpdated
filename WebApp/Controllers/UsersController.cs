@@ -15,7 +15,7 @@ namespace SherioWebApplication.Controllers
             return db.SelectAll();
         }
 
-        [HttpGet("{id}")]
+        [HttpGet]
         public User? GetById(int id) => UserDB.SelectById(id);
 
         [HttpPost]
@@ -39,6 +39,7 @@ namespace SherioWebApplication.Controllers
         {
             var u = UserDB.SelectById(id);
             if (u == null) return 0;
+
             var db = new UserDB();
             db.Delete(u);
             return db.SaveChanges();

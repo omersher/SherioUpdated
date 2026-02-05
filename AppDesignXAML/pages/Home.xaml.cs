@@ -1,26 +1,46 @@
-﻿using System;
+﻿using ApiInterface;
+using AppDesignXAML.pages;
+using Model;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Model; // ודא שאתה משתמש ב-namespace הנכון עבור City ו-CityDB
-using ViewModel; // ודא שאתה משתמש ב-namespace הנכון
 
-namespace AppDesignXAML.pages
+namespace SherioAPP.pages
 {
     public partial class Home : Page
     {
-        // הערכים ההתחלתיים נטענים אוטומטית בהפעלה
+        // הערכים ההתחלתיים
         int adults = 2, kids = 0, rooms = 1;
+
+        // API
+        ApiService apiClient = new ApiService();
 
         public Home()
         {
             InitializeComponent();
-            // ודא שהאובייקט CityDB זמין
-            CitiesList.ItemsSource = new CityDB().SelectAll();
-            UpdateGuestsText(); // קוראים לזה כדי להציג את הערכים ההתחלתיים ב-GuestsText
+
+            // 👈 בדיוק כמו הקוד שעבד – רק בלי CityDB
+            LoadCities();
+
+            UpdateGuestsText();
         }
 
         // ===== Cities =====
+        private async void LoadCities()
+        {
+            try
+            {
+                List<City> cities = await apiClient.GetAllCitiesAsync();
+                CitiesList.ItemsSource = cities;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("שגיאה בטעינת ערים:\n" + ex.Message);
+            }
+        }
+
         private void Destination_Click(object sender, MouseButtonEventArgs e)
         {
             CitiesPopup.IsOpen = true;
@@ -46,8 +66,8 @@ namespace AppDesignXAML.pages
             if (CalendarRange.SelectedDates.Count > 0)
             {
                 var start = CalendarRange.SelectedDates[0];
-                // שימוש באופרטור ה-Index החדש (^)
                 var end = CalendarRange.SelectedDates[^1];
+
                 DatesText.Text = $"{start:dd/MM} – {end:dd/MM}";
                 DatesPopup.IsOpen = false;
             }
@@ -61,26 +81,49 @@ namespace AppDesignXAML.pages
 
         private void UpdateGuestsText()
         {
-            // עדכון הטקסט הראשי
             GuestsText.Text = $"{adults + kids} נוסעים · חדר {rooms}";
-            // עדכון הטקסטים בתוך ה-Popup
             AdultsText.Text = adults.ToString();
             KidsText.Text = kids.ToString();
             RoomsText.Text = rooms.ToString();
         }
 
-        private void AdultsPlus_Click(object sender, RoutedEventArgs e) { adults++; UpdateGuestsText(); }
-        private void AdultsMinus_Click(object sender, RoutedEventArgs e) { if (adults > 1) adults--; UpdateGuestsText(); }
-
-        private void KidsPlus_Click(object sender, RoutedEventArgs e) { kids++; UpdateGuestsText(); }
-        private void KidsMinus_Click(object sender, RoutedEventArgs e) { if (kids > 0) kids--; UpdateGuestsText(); }
-
-        private void RoomsPlus_Click(object sender, RoutedEventArgs e) { rooms++; UpdateGuestsText(); }
-        private void RoomsMinus_Click(object sender, RoutedEventArgs e) { if (rooms > 1) rooms--; UpdateGuestsText(); }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AdultsPlus_Click(object sender, RoutedEventArgs e)
         {
-            // לוגיקת חיפוש
+            adults++;
+            UpdateGuestsText();
+        }
+
+        private void AdultsMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (adults > 1)
+                adults--;
+            UpdateGuestsText();
+        }
+
+        private void KidsPlus_Click(object sender, RoutedEventArgs e)
+        {
+            kids++;
+            UpdateGuestsText();
+        }
+
+        private void KidsMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (kids > 0)
+                kids--;
+            UpdateGuestsText();
+        }
+
+        private void RoomsPlus_Click(object sender, RoutedEventArgs e)
+        {
+            rooms++;
+            UpdateGuestsText();
+        }
+
+        private void RoomsMinus_Click(object sender, RoutedEventArgs e)
+        {
+            if (rooms > 1)
+                rooms--;
+            UpdateGuestsText();
         }
 
         private void GuestsConfirm_Click(object sender, RoutedEventArgs e)
@@ -88,9 +131,15 @@ namespace AppDesignXAML.pages
             GuestsPopup.IsOpen = false;
         }
 
+        // ===== Search =====
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            // לוגיקת חיפוש בהמשך
+        }
+
+        // ===== Login =====
         private void Login_Click(object sender, RoutedEventArgs e)
         {
-            // ודא שהמחלקה Login קיימת ב-namespace AppDesignXAML.pages
             NavigationService.Navigate(new Login());
         }
     }

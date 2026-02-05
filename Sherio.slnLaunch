@@ -3,7 +3,11 @@
     "Name": "New Profile",
     "Projects": [
       {
-        "Path": "SherioAppDesign\\SherioAppDesign.csproj",
+        "Path": "WebApp\\SherioWebApplication.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "AppDesignXAML\\AppDesignXAML.csproj",
         "Action": "Start"
       }
     ]

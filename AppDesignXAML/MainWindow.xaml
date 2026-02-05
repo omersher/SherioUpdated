@@ -43,8 +43,7 @@
             </Button>
 
             <Frame x:Name="MainFrame"
-                   Source="pages/Home.xaml"
-                   NavigationUIVisibility="Hidden"/>
+       NavigationUIVisibility="Hidden"/>
 
         </Grid>
 

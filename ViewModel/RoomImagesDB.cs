@@ -13,6 +13,14 @@ namespace ViewModel
             return new RoomImagesList(base.Select());
         }
 
+        public RoomImagesList SelectByRoomId(int roomId)
+        {
+            command.CommandText = "SELECT * FROM RoomImages WHERE RoomID=?";
+            command.Parameters.Clear();
+            command.Parameters.Add(new OleDbParameter("@roomId", roomId));
+            return new RoomImagesList(base.Select());
+        }
+
         public static RoomImage SelectById(int id)
         {
             RoomImagesDB db = new RoomImagesDB();

@@ -348,7 +348,6 @@
                     </StackPanel>
                 </Border>
             </Popup>
-
         </Grid>
     </Grid>
 </Page>
