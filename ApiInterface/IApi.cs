@@ -45,8 +45,9 @@ namespace ApiInterface
         // ---- Rooms ----
         Task<RoomList> GetAllRoomsAsync();
         Task<Room?> GetRoomByIdAsync(int id);
+        Task<RoomList> GetRoomsByHotelIdAsync(int hotelId);
         Task<int> InsertRoomAsync(Room r);
-        Task<int> UpdateRoomAsync(Room r);
+        Task<int> UpdateRoomAsync(RoomUpdateDto dto);
         Task<int> DeleteRoomAsync(int id);
 
         // ---- RoomImages ----
@@ -63,12 +64,13 @@ namespace ApiInterface
         Task<int> UpdateRoomAvailabilityAsync(RoomAvailability ra);
         Task<int> DeleteRoomAvailabilityAsync(int id);
 
-        // ---- Bookings ----
+        // ===== BOOKINGS =====
         Task<BookingList> GetAllBookingsAsync();
         Task<Booking?> GetBookingByIdAsync(int id);
         Task<int> InsertBookingAsync(Booking b);
-        Task<int> UpdateBookingAsync(Booking b);
+        Task<int> UpdateBookingAsync(BookingUpdateDto dto);
         Task<int> DeleteBookingAsync(int id);
+        Task<BookingList> GetBookingsByHotelAsync(int hotelId);
 
         // ---- Payments ----
         Task<PaymentList> GetAllPaymentsAsync();

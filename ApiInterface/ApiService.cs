@@ -56,6 +56,8 @@ namespace ApiInterface
             return await ReadAsAsync<int>(resp);
         }
 
+
+
         // ===================== Cities =====================
         public Task<CityList> GetAllCitiesAsync()
             => GetAsync<CityList>("api/City/GetAll");
@@ -153,13 +155,14 @@ namespace ApiInterface
             => GetAsync<Room?>($"api/Rooms/GetById/{id}");
 
         public Task<RoomList> GetRoomsByHotelIdAsync(int hotelId)
-            => GetAsync<RoomList>($"api/Rooms/GetRoomsByHotelId/{hotelId}");
+            => GetAsync<RoomList>($"api/Rooms/GetByHotel/{hotelId}");
 
         public Task<int> InsertRoomAsync(Room r)
             => PostAsync("api/Rooms/Insert", r);
 
-        public Task<int> UpdateRoomAsync(Room r)
-            => PutAsync("api/Rooms/Update", r);
+        // ✅ UPDATE עם DTO בלבד
+        public Task<int> UpdateRoomAsync(RoomUpdateDto dto)
+            => PutAsync("api/Rooms/Update", dto);
 
         public Task<int> DeleteRoomAsync(int id)
             => DeleteAsync($"api/Rooms/Delete/{id}");
@@ -201,6 +204,9 @@ namespace ApiInterface
             => DeleteAsync($"api/RoomAvailability/Delete/{id}");
 
         // ===================== Bookings =====================
+        public Task<BookingList> GetBookingsByHotelAsync(int hotelId)
+            => GetAsync<BookingList>($"api/Bookings/GetByHotel/{hotelId}");
+
         public Task<BookingList> GetAllBookingsAsync()
             => GetAsync<BookingList>("api/Bookings/GetAll");
 
@@ -210,11 +216,12 @@ namespace ApiInterface
         public Task<int> InsertBookingAsync(Booking b)
             => PostAsync("api/Bookings/Insert", b);
 
-        public Task<int> UpdateBookingAsync(Booking b)
-            => PutAsync("api/Bookings/Update", b);
+        public Task<int> UpdateBookingAsync(BookingUpdateDto dto)
+            => PutAsync("api/Bookings/Update", dto);
 
         public Task<int> DeleteBookingAsync(int id)
             => DeleteAsync($"api/Bookings/Delete/{id}");
+
 
         // ===================== Payments =====================
         public Task<PaymentList> GetAllPaymentsAsync()

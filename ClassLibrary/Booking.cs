@@ -28,4 +28,13 @@
         public int ChildCount { get => childCount; set => childCount = value; }
         public string Status { get => status; set => status = value; }
     }
+
+    public class BookingUpdateDto
+    {
+        public int Id { get; set; }
+        public int AdultCount { get; set; }
+        public int ChildCount { get; set; }
+        public string Status { get; set; }
+    }
+
 }

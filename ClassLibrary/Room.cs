@@ -40,4 +40,24 @@
                    $"TotalUnits = {TotalUnits}";
         }
     }
+
+    public class RoomUpdateDto
+    {
+        public int Id { get; set; }
+        public int HotelId { get; set; }
+
+        public string RoomName { get; set; }
+        public int AdultRate { get; set; }
+        public int ChildRate { get; set; }
+        public int Bedrooms { get; set; }
+        public int Bathrooms { get; set; }
+
+        public bool HasKitchen { get; set; }
+        public bool HasParking { get; set; }
+        public bool HasBalcony { get; set; }
+        public bool HasLivingRoom { get; set; }
+
+        public int TotalUnits { get; set; }
+    }
+
 }
