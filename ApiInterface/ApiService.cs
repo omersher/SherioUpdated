@@ -121,8 +121,8 @@ namespace ApiInterface
         public Task<int> InsertHotelAsync(Hotel h)
             => PostAsync("api/Hotels/Insert", h);
 
-        public Task<int> UpdateHotelAsync(Hotel h)
-            => PutAsync("api/Hotels/Update", h);
+        public Task<int> UpdateHotelAsync(HotelUpdateDto dto)
+            => PutAsync("api/Hotels/Update", dto);
 
         public Task<int> DeleteHotelAsync(int id)
             => DeleteAsync($"api/Hotels/Delete/{id}");

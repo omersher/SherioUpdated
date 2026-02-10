@@ -32,5 +32,27 @@
         {
             return $"{Name} | {City?.CityName} | ⭐ {StarRating}";
         }
+
+
     }
+
+    public class HotelUpdateDto
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Email { get; set; }
+        public string WebSite { get; set; }
+        public string StreetAddress { get; set; }
+
+        public int StarRating { get; set; }
+
+        public bool HasPool { get; set; }
+        public bool HasGym { get; set; }
+        public bool HasRestaurant { get; set; }
+
+        public string MainHotelImageLink { get; set; }
+    }
+
 }

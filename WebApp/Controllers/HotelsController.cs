@@ -34,10 +34,26 @@ namespace SherioWebApplication.Controllers
         }
 
         [HttpPut]
-        public int Update([FromBody] Hotel h)
+        public int Update([FromBody] HotelUpdateDto dto)
         {
+            var hotel = HotelsDB.SelectById(dto.Id);
+            if (hotel == null) return 0;
+
+            hotel.Name = dto.Name;
+            hotel.PhoneNumber = dto.PhoneNumber;
+            hotel.Email = dto.Email;
+            hotel.WebSite = dto.WebSite;
+            hotel.StreetAddress = dto.StreetAddress;
+            hotel.StarRating = dto.StarRating;
+
+            hotel.HasPool = dto.HasPool;
+            hotel.HasGym = dto.HasGym;
+            hotel.HasRestaurant = dto.HasRestaurant;
+
+            hotel.MainHotelImageLink = dto.MainHotelImageLink;
+
             var db = new HotelsDB();
-            db.Update(h);
+            db.Update(hotel);
             return db.SaveChanges();
         }
 

@@ -7,6 +7,8 @@ namespace ViewModel
 {
     public class HotelsDB : BaseDB
     {
+        // ---------- SELECT ----------
+
         public HotelList SelectAll()
         {
             command.CommandText = "SELECT * FROM Hotels";
@@ -25,12 +27,13 @@ namespace ViewModel
 
         public HotelList SelectByOwnerId(int ownerId)
         {
-            command.CommandText = "SELECT * FROM Hotels WHERE OwnerId=?";
+            command.CommandText = "SELECT * FROM Hotels WHERE OwnerID=?";
             command.Parameters.Clear();
             command.Parameters.Add(new OleDbParameter("@ownerId", ownerId));
-
             return new HotelList(base.Select());
         }
+
+        // ---------- CREATE MODEL ----------
 
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
@@ -41,10 +44,11 @@ namespace ViewModel
             h.Email = reader["Email"].ToString();
             h.WebSite = reader["WebSite"].ToString();
             h.StreetAddress = reader["StreetAddress"].ToString();
-            if (reader["MainHotelImageLink"] != DBNull.Value)
-                h.MainHotelImageLink = reader["MainHotelImageLink"].ToString();
-            else
-                h.MainHotelImageLink = "";
+
+            h.MainHotelImageLink =
+                reader["MainHotelImageLink"] != DBNull.Value
+                    ? reader["MainHotelImageLink"].ToString()
+                    : "";
 
             if (reader["OwnerID"] != DBNull.Value)
                 h.Owner = OwnerDB.SelectById(Convert.ToInt32(reader["OwnerID"]));
@@ -65,12 +69,16 @@ namespace ViewModel
 
         public override BaseEntity NewEntity() => new Hotel();
 
+        // ---------- DELETE ----------
+
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             if (entity is not Hotel h) return;
             cmd.CommandText = "DELETE FROM Hotels WHERE ID=?";
             cmd.Parameters.Add(new OleDbParameter("@id", h.Id));
         }
+
+        // ---------- INSERT ----------
 
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
@@ -85,8 +93,8 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@phone", h.PhoneNumber));
             cmd.Parameters.Add(new OleDbParameter("@mail", h.Email));
             cmd.Parameters.Add(new OleDbParameter("@site", h.WebSite));
-            cmd.Parameters.Add(new OleDbParameter("@owner", DbVal(h.Owner?.Id)));
-            cmd.Parameters.Add(new OleDbParameter("@city", DbVal(h.City?.Id)));
+            cmd.Parameters.Add(new OleDbParameter("@owner", h.Owner.Id));
+            cmd.Parameters.Add(new OleDbParameter("@city", h.City.Id));
             cmd.Parameters.Add(new OleDbParameter("@addr", h.StreetAddress));
             cmd.Parameters.Add(new OleDbParameter("@stars", h.StarRating));
             cmd.Parameters.Add(new OleDbParameter("@pool", h.HasPool));
@@ -95,21 +103,43 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@img", h.MainHotelImageLink));
         }
 
+        // ---------- UPDATE ----------
+        // ❗ CityID ו-OwnerID מתעדכנים רק אם קיימים
+
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             if (entity is not Hotel h) return;
 
-            cmd.CommandText =
-                "UPDATE Hotels SET " +
-                "Name=?, PhoneNumber=?, Email=?, WebSite=?, OwnerID=?, CityID=?, StreetAddress=?, StarRating=?, HasPool=?, HasGym=?, HasRestaurant=?, MainHotelImageLink=? " +
-                "WHERE ID=?";
+            bool hasOwner = h.Owner != null && h.Owner.Id > 0;
+            bool hasCity = h.City != null && h.City.Id > 0;
 
-            cmd.Parameters.Add(new OleDbParameter("@name", h.Name));
-            cmd.Parameters.Add(new OleDbParameter("@phone", h.PhoneNumber));
-            cmd.Parameters.Add(new OleDbParameter("@mail", h.Email));
-            cmd.Parameters.Add(new OleDbParameter("@site", h.WebSite));
-            cmd.Parameters.Add(new OleDbParameter("@owner", DbVal(h.Owner?.Id)));
-            cmd.Parameters.Add(new OleDbParameter("@city", DbVal(h.City?.Id)));
+            if (hasOwner && hasCity)
+            {
+                cmd.CommandText =
+                    "UPDATE Hotels SET " +
+                    "Name=?, PhoneNumber=?, Email=?, WebSite=?, OwnerID=?, CityID=?, StreetAddress=?, StarRating=?, HasPool=?, HasGym=?, HasRestaurant=?, MainHotelImageLink=? " +
+                    "WHERE ID=?";
+
+                cmd.Parameters.Add(new OleDbParameter("@name", h.Name));
+                cmd.Parameters.Add(new OleDbParameter("@phone", h.PhoneNumber));
+                cmd.Parameters.Add(new OleDbParameter("@mail", h.Email));
+                cmd.Parameters.Add(new OleDbParameter("@site", h.WebSite));
+                cmd.Parameters.Add(new OleDbParameter("@owner", h.Owner.Id));
+                cmd.Parameters.Add(new OleDbParameter("@city", h.City.Id));
+            }
+            else
+            {
+                cmd.CommandText =
+                    "UPDATE Hotels SET " +
+                    "Name=?, PhoneNumber=?, Email=?, WebSite=?, StreetAddress=?, StarRating=?, HasPool=?, HasGym=?, HasRestaurant=?, MainHotelImageLink=? " +
+                    "WHERE ID=?";
+
+                cmd.Parameters.Add(new OleDbParameter("@name", h.Name));
+                cmd.Parameters.Add(new OleDbParameter("@phone", h.PhoneNumber));
+                cmd.Parameters.Add(new OleDbParameter("@mail", h.Email));
+                cmd.Parameters.Add(new OleDbParameter("@site", h.WebSite));
+            }
+
             cmd.Parameters.Add(new OleDbParameter("@addr", h.StreetAddress));
             cmd.Parameters.Add(new OleDbParameter("@stars", h.StarRating));
             cmd.Parameters.Add(new OleDbParameter("@pool", h.HasPool));

@@ -31,7 +31,7 @@ namespace ApiInterface
         Task<Hotel?> GetHotelByIdAsync(int id);
         Task<HotelList> GetHotelsByOwnerIdAsync(int ownerId);
         Task<int> InsertHotelAsync(Hotel h);
-        Task<int> UpdateHotelAsync(Hotel h);
+        Task<int> UpdateHotelAsync(HotelUpdateDto dto);
         Task<int> DeleteHotelAsync(int id);
 
         // ---- HotelImages ----
