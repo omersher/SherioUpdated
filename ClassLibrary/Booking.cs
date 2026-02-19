@@ -1,32 +1,58 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
+    public enum BookingStatus
+    {
+        Pending,
+        Confirmed,
+        CheckedOut,
+        Cancelled
+    }
+
     public class Booking : BaseEntity
     {
-        private User user;
-        private Room room;
-        private int roomID;  
-        private DateTime createdAt;
+        public int UserID { get; set; }
+        public int RoomID { get; set; } 
+
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
+
         private DateTime startDate;
-        private DateTime endDate;
-        private int adultCount;
-        private int childCount;
-        private string status;
-
-        public User User { get => user; set => user = value; }
-        public Room Room { get => room; set => room = value; }
-
-        public int RoomID
+        public DateTime StartDate
         {
-            get => roomID;
-            set => roomID = value;
+            get => startDate;
+            set
+            {
+                startDate = value;
+                ValidateDates();
+            }
         }
 
-        public DateTime CreatedAt { get => createdAt; set => createdAt = value; }
-        public DateTime StartDate { get => startDate; set => startDate = value; }
-        public DateTime EndDate { get => endDate; set => endDate = value; }
-        public int AdultCount { get => adultCount; set => adultCount = value; }
-        public int ChildCount { get => childCount; set => childCount = value; }
-        public string Status { get => status; set => status = value; }
+        private DateTime endDate;
+        public DateTime EndDate
+        {
+            get => endDate;
+            set
+            {
+                endDate = value;
+                ValidateDates();
+            }
+        }
+
+        public int AdultCount { get; set; }
+        public int ChildCount { get; set; }
+
+        // IMPORTANT: keep enum but stored as string in DB
+        public BookingStatus Status { get; set; } = BookingStatus.Pending;
+
+        private void ValidateDates()
+        {
+            if (startDate != default && endDate != default)
+            {
+                if (endDate <= startDate)
+                    throw new ArgumentException("End date must be after start date");
+            }
+        }
     }
 
     public class BookingUpdateDto
@@ -34,7 +60,6 @@
         public int Id { get; set; }
         public int AdultCount { get; set; }
         public int ChildCount { get; set; }
-        public string Status { get; set; }
+        public BookingStatus Status { get; set; }
     }
-
 }

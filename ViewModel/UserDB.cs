@@ -65,23 +65,23 @@ namespace ViewModel
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
             User u = (User)entity;
+
             cmd.CommandText =
-                "INSERT INTO Users (FullName, GuestID, Email, Phone, PassHash) VALUES (?,?,?,?,?)";
+                "INSERT INTO Users (FullName, GuestID, Email, Phone, PassHash, IsOwner) VALUES (?,?,?,?,?,?)";
 
             cmd.Parameters.Add(new OleDbParameter("@name", u.FullName));
             cmd.Parameters.Add(new OleDbParameter("@guest", u.GuestID));
             cmd.Parameters.Add(new OleDbParameter("@mail", u.Email));
             cmd.Parameters.Add(new OleDbParameter("@phone", u.Phone));
             cmd.Parameters.Add(new OleDbParameter("@pass", u.PassHash));
-            cmd.Parameters.Add(new OleDbParameter("@isOwner", u.IsOwner)); 
-
+            cmd.Parameters.Add(new OleDbParameter("@isOwner", u.IsOwner));
         }
-
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             User u = (User)entity;
+
             cmd.CommandText =
-                "UPDATE Users SET FullName=?, GuestID=?, Email=?, Phone=?, PassHash=? WHERE ID=?";
+                "UPDATE Users SET FullName=?, GuestID=?, Email=?, Phone=?, PassHash=?, IsOwner=? WHERE ID=?";
 
             cmd.Parameters.Add(new OleDbParameter("@name", u.FullName));
             cmd.Parameters.Add(new OleDbParameter("@guest", u.GuestID));
@@ -91,5 +91,6 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@isOwner", u.IsOwner));
             cmd.Parameters.Add(new OleDbParameter("@id", u.Id));
         }
+
     }
 }

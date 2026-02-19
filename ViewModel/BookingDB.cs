@@ -24,7 +24,7 @@ namespace ViewModel
             BookingDB db = new BookingDB();
             db.command.CommandText = "SELECT * FROM Bookings WHERE ID=?";
             db.command.Parameters.Clear();
-            db.command.Parameters.Add(new OleDbParameter("@id", id));
+            db.command.Parameters.Add("@id", OleDbType.Integer).Value = id;
 
             BookingList list = new BookingList(db.Select());
             return list.Count > 0 ? list[0] : null;
@@ -38,15 +38,31 @@ namespace ViewModel
             Booking b = entity as Booking ?? new Booking();
 
             b.Id = Convert.ToInt32(reader["ID"]);
+            b.UserID = Convert.ToInt32(reader["UserID"]);
             b.RoomID = Convert.ToInt32(reader["RoomID"]);
             b.CreatedAt = Convert.ToDateTime(reader["CreatedAt"]);
             b.StartDate = Convert.ToDateTime(reader["StartDate"]);
             b.EndDate = Convert.ToDateTime(reader["EndDate"]);
             b.AdultCount = Convert.ToInt32(reader["AdultCount"]);
             b.ChildCount = Convert.ToInt32(reader["ChildCount"]);
-            b.Status = reader["Status"].ToString();
 
-            base.CreateModel(b);
+            if (reader["Status"] != DBNull.Value)
+            {
+                var s = reader["Status"].ToString();
+
+                // If stored as number "0"
+                if (int.TryParse(s, out int enumNum))
+                    b.Status = (BookingStatus)enumNum;
+                else if (Enum.TryParse<BookingStatus>(s, true, out var enumVal))
+                    b.Status = enumVal;
+                else
+                    b.Status = BookingStatus.Pending;
+            }
+            else
+            {
+                b.Status = BookingStatus.Pending;
+            }
+
             return b;
         }
 
@@ -61,21 +77,23 @@ namespace ViewModel
 
             cmd.CommandText =
                 "INSERT INTO Bookings " +
-                "(RoomID, CreatedAt, StartDate, EndDate, AdultCount, ChildCount, Status) " +
-                "VALUES (?,?,?,?,?,?,?)";
+                "(UserID, RoomID, CreatedAt, StartDate, EndDate, AdultCount, ChildCount, Status) " +
+                "VALUES (?,?,?,?,?,?,?,?)";
 
             cmd.Parameters.Clear();
-            cmd.Parameters.Add(new OleDbParameter("@room", b.RoomID));
-            cmd.Parameters.Add(new OleDbParameter("@created", b.CreatedAt));
-            cmd.Parameters.Add(new OleDbParameter("@start", b.StartDate));
-            cmd.Parameters.Add(new OleDbParameter("@end", b.EndDate));
-            cmd.Parameters.Add(new OleDbParameter("@adult", b.AdultCount));
-            cmd.Parameters.Add(new OleDbParameter("@child", b.ChildCount));
-            cmd.Parameters.Add(new OleDbParameter("@status", b.Status));
+
+            cmd.Parameters.Add("@user", OleDbType.Integer).Value = b.UserID;
+            cmd.Parameters.Add("@room", OleDbType.Integer).Value = b.RoomID;
+            cmd.Parameters.Add("@created", OleDbType.Date).Value = b.CreatedAt;
+            cmd.Parameters.Add("@start", OleDbType.Date).Value = b.StartDate;
+            cmd.Parameters.Add("@end", OleDbType.Date).Value = b.EndDate;
+            cmd.Parameters.Add("@adult", OleDbType.Integer).Value = b.AdultCount;
+            cmd.Parameters.Add("@child", OleDbType.Integer).Value = b.ChildCount;
+            cmd.Parameters.Add("@status", OleDbType.VarChar).Value = b.Status.ToString();
         }
 
         // =========================
-        // UPDATE  ✅ זה מה שאתה צריך
+        // UPDATE
         // =========================
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
@@ -85,10 +103,11 @@ namespace ViewModel
                 "UPDATE Bookings SET AdultCount=?, ChildCount=?, Status=? WHERE ID=?";
 
             cmd.Parameters.Clear();
-            cmd.Parameters.Add(new OleDbParameter("@adult", b.AdultCount));
-            cmd.Parameters.Add(new OleDbParameter("@child", b.ChildCount));
-            cmd.Parameters.Add(new OleDbParameter("@status", b.Status));
-            cmd.Parameters.Add(new OleDbParameter("@id", b.Id));
+
+            cmd.Parameters.Add("@adult", OleDbType.Integer).Value = b.AdultCount;
+            cmd.Parameters.Add("@child", OleDbType.Integer).Value = b.ChildCount;
+            cmd.Parameters.Add("@status", OleDbType.VarChar).Value = b.Status.ToString();
+            cmd.Parameters.Add("@id", OleDbType.Integer).Value = b.Id;
         }
 
         // =========================
@@ -100,21 +119,43 @@ namespace ViewModel
 
             cmd.CommandText = "DELETE FROM Bookings WHERE ID=?";
             cmd.Parameters.Clear();
-            cmd.Parameters.Add(new OleDbParameter("@id", b.Id));
+            cmd.Parameters.Add("@id", OleDbType.Integer).Value = b.Id;
         }
 
+        // =========================
+        // SELECT BY HOTEL
+        // =========================
         public BookingList SelectByHotel(int hotelId)
         {
             command.CommandText =
                 "SELECT B.* FROM Bookings B " +
                 "INNER JOIN Rooms R ON B.RoomID = R.ID " +
-                "WHERE R.HotelID = ?";
+                "WHERE R.HotelID=?";
 
             command.Parameters.Clear();
-            command.Parameters.Add(new OleDbParameter("@hotelId", hotelId));
+            command.Parameters.Add("@hotelId", OleDbType.Integer).Value = hotelId;
 
             return new BookingList(base.Select());
         }
 
+        // =========================
+        // CHECK ROOM AVAILABILITY 🔥
+        // =========================
+        public bool IsRoomAvailable(int roomId, DateTime start, DateTime end)
+        {
+            command.CommandText =
+                "SELECT COUNT(*) FROM Bookings " +
+                "WHERE RoomID=? AND NOT (EndDate<=? OR StartDate>=?)";
+
+            command.Parameters.Clear();
+            command.Parameters.Add("@room", OleDbType.Integer).Value = roomId;
+            command.Parameters.Add("@start", OleDbType.Date).Value = start;
+            command.Parameters.Add("@end", OleDbType.Date).Value = end;
+
+            // DO NOT open/close connection manually
+            int count = Convert.ToInt32(command.ExecuteScalar());
+
+            return count == 0;
+        }
     }
 }

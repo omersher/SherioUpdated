@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Model;
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using Model;
+using static System.Net.WebRequestMethods;
 
 namespace ApiInterface
 {
@@ -35,15 +36,37 @@ namespace ApiInterface
         }
 
         private async Task<T> GetAsync<T>(string path)
-            => await client.GetFromJsonAsync<T>($"{uri}/{path}")
-               ?? throw new InvalidOperationException("Empty response body.");
+        {
+            var fullUrl = $"{uri.TrimEnd('/')}/{path}";
+            Console.WriteLine("==== CALLING URL ====");
+            Console.WriteLine(fullUrl);
+            Console.WriteLine("=====================");
+
+            var response = await client.GetAsync(fullUrl);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                var error = await response.Content.ReadAsStringAsync();
+                throw new Exception(
+                    $"HTTP ERROR {(int)response.StatusCode} ({response.StatusCode})\n" +
+                    $"URL: {fullUrl}\n" +
+                    $"Response: {error}");
+            }
+
+            var data = await response.Content.ReadFromJsonAsync<T>();
+
+            if (data == null)
+                throw new InvalidOperationException("Empty response body.");
+
+            return data;
+        }
 
         private async Task<int> PostAsync<TBody>(string path, TBody body)
         {
             var resp = await client.PostAsJsonAsync($"{uri}/{path}", body);
             return await ReadAsAsync<int>(resp);
         }
-
+         
         private async Task<int> PutAsync<TBody>(string path, TBody body)
         {
             var resp = await client.PutAsJsonAsync($"{uri}/{path}", body);
@@ -79,7 +102,7 @@ namespace ApiInterface
             => GetAsync<UserList>("api/Users/GetAll");
 
         public Task<User?> GetUserByIdAsync(int id)
-            => GetAsync<User?>($"api/Users/GetById/{id}");
+            => GetAsync<User?>($"api/Users/GetById?id={id}");
 
         public Task<int> InsertUserAsync(User u)
             => PostAsync("api/Users/Insert", u);
@@ -89,6 +112,9 @@ namespace ApiInterface
 
         public Task<int> DeleteUserAsync(int id)
             => DeleteAsync($"api/Users/Delete/{id}");
+
+        public Task<int> ToggleOwnerAsync(int id)
+            => PutAsync($"api/Users/ToggleOwner/{id}", id);
 
         // ===================== Owners =====================
         public Task<OwnerList> GetAllOwnersAsync()
@@ -204,24 +230,23 @@ namespace ApiInterface
             => DeleteAsync($"api/RoomAvailability/Delete/{id}");
 
         // ===================== Bookings =====================
-        public Task<BookingList> GetBookingsByHotelAsync(int hotelId)
-            => GetAsync<BookingList>($"api/Bookings/GetByHotel/{hotelId}");
-
         public Task<BookingList> GetAllBookingsAsync()
-            => GetAsync<BookingList>("api/Bookings/GetAll");
+            => GetAsync<BookingList>("api/Bookings");
 
         public Task<Booking?> GetBookingByIdAsync(int id)
-            => GetAsync<Booking?>($"api/Bookings/GetById/{id}");
+            => GetAsync<Booking?>($"api/Bookings/{id}");
 
-        public Task<int> InsertBookingAsync(Booking b)
-            => PostAsync("api/Bookings/Insert", b);
+        public Task<BookingList> GetBookingsByHotelAsync(int hotelId)
+            => GetAsync<BookingList>($"api/Bookings/hotel/{hotelId}");
+
+        public Task<int> InsertBookingAsync(Booking booking)
+            => PostAsync("api/Bookings", booking);
 
         public Task<int> UpdateBookingAsync(BookingUpdateDto dto)
-            => PutAsync("api/Bookings/Update", dto);
+            => PutAsync("api/Bookings", dto);
 
         public Task<int> DeleteBookingAsync(int id)
-            => DeleteAsync($"api/Bookings/Delete/{id}");
-
+            => DeleteAsync($"api/Bookings/{id}");
 
         // ===================== Payments =====================
         public Task<PaymentList> GetAllPaymentsAsync()

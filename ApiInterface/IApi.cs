@@ -13,6 +13,7 @@ namespace ApiInterface
         Task<int> DeleteCityAsync(int id);
 
         // ---- Users ----
+        Task<int> ToggleOwnerAsync(int id);
         Task<UserList> GetAllUsersAsync();
         Task<User?> GetUserByIdAsync(int id);
         Task<int> InsertUserAsync(User u);
@@ -67,7 +68,7 @@ namespace ApiInterface
         // ===== BOOKINGS =====
         Task<BookingList> GetAllBookingsAsync();
         Task<Booking?> GetBookingByIdAsync(int id);
-        Task<int> InsertBookingAsync(Booking b);
+        Task<int> InsertBookingAsync(Booking booking);
         Task<int> UpdateBookingAsync(BookingUpdateDto dto);
         Task<int> DeleteBookingAsync(int id);
         Task<BookingList> GetBookingsByHotelAsync(int hotelId);

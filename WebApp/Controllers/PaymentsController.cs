@@ -16,11 +16,23 @@ namespace SherioWebApplication.Controllers
         }
 
         [HttpGet("{id}")]
-        public Payment? GetById(int id) => PaymentDB.SelectById(id);
+        public Payment? GetById(int id)
+        {
+            return PaymentDB.SelectById(id);
+        }
 
         [HttpPost]
         public int Insert([FromBody] Payment p)
         {
+            if (p == null)
+                return 0;
+
+            if (p.UserID <= 0)
+                return 0;
+
+            if (p.BookingID <= 0)
+                return 0;
+
             var db = new PaymentDB();
             db.Insert(p);
             return db.SaveChanges();
@@ -38,7 +50,9 @@ namespace SherioWebApplication.Controllers
         public int Delete(int id)
         {
             var p = PaymentDB.SelectById(id);
-            if (p == null) return 0;
+            if (p == null)
+                return 0;
+
             var db = new PaymentDB();
             db.Delete(p);
             return db.SaveChanges();

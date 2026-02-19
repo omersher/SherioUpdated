@@ -72,7 +72,7 @@ static void ShowBookings(string title)
     var db = new BookingDB();
     var list = db.SelectAll();
     Console.WriteLine($"\n=== {title} ===");
-    foreach (var b in list) Console.WriteLine($"{b.Id} | User={b.User?.FullName} | Room={b.Room?.RoomName} | {b.StartDate:d}-{b.EndDate:d} | {b.Status}");
+    foreach (var b in list) Console.WriteLine($"{b.Id} | User={b.UserID} | Room={b.RoomID} | {b.StartDate:d}-{b.EndDate:d} | {b.Status}");
 }
 
 static void ShowPayments(string title)
@@ -176,8 +176,8 @@ if (ensureBooking == null)
 {
     ensureBooking = new Booking
     {
-        User = ensureUser,
-        Room = ensureRoom,
+        UserID = ensureUser,
+        RoomID = ensureRoom,
         CreatedAt = DateTime.Now,
         StartDate = DateTime.Today.AddDays(2),
         EndDate = DateTime.Today.AddDays(4),
@@ -546,8 +546,8 @@ if (DO_INSERT)
 {
     bookingInserted = new Booking
     {
-        User = ensureUser,
-        Room = ensureRoom,
+        UserID = ensureUser,
+        RoomID = ensureRoom,
         CreatedAt = DateTime.Now,
         StartDate = DateTime.Today.AddDays(3),
         EndDate = DateTime.Today.AddDays(5),

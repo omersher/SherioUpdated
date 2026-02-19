@@ -44,5 +44,19 @@ namespace SherioWebApplication.Controllers
             db.Delete(u);
             return db.SaveChanges();
         }
+
+        [HttpPut("{id}")]
+        public int ToggleOwner(int id)
+        {
+            var user = UserDB.SelectById(id);
+            if (user == null)
+                return 0;
+
+            user.IsOwner = !user.IsOwner;
+
+            var db = new UserDB();
+            db.Update(user);
+            return db.SaveChanges();
+        }
     }
 }

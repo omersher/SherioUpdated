@@ -5,7 +5,7 @@ using ViewModel;
 namespace SherioWebApplication.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     public class BookingsController : ControllerBase
     {
         // =====================
@@ -19,10 +19,10 @@ namespace SherioWebApplication.Controllers
         }
 
         // =====================
-        // GET BY HOTEL (OWNER)
-        // api/Bookings/GetByHotel/5
+        // GET BY HOTEL
+        // api/Bookings/hotel/5
         // =====================
-        [HttpGet("{hotelId}")]
+        [HttpGet("hotel/{hotelId}")]
         public BookingList GetByHotel(int hotelId)
         {
             BookingDB db = new BookingDB();
@@ -31,7 +31,7 @@ namespace SherioWebApplication.Controllers
 
         // =====================
         // GET BY ID
-        // api/Bookings/GetById/3
+        // api/Bookings/3
         // =====================
         [HttpGet("{id}")]
         public Booking? GetById(int id)
@@ -45,13 +45,30 @@ namespace SherioWebApplication.Controllers
         [HttpPost]
         public int Insert([FromBody] Booking b)
         {
+            if (b == null)
+                throw new Exception("Booking is NULL");
+
+            if (b.UserID <= 0)
+                throw new Exception("UserID invalid");
+
+            if (b.RoomID <= 0)
+                throw new Exception("RoomID invalid");
+
+            if (b.StartDate == default || b.EndDate == default)
+                throw new Exception("Dates invalid");
+
             var db = new BookingDB();
+
+            if (!db.IsRoomAvailable(b.RoomID, b.StartDate, b.EndDate))
+                throw new Exception("Room already booked");
+
             db.Insert(b);
-            return db.SaveChanges();
+            db.SaveChanges();
+            return b.Id;
         }
 
         // =====================
-        // UPDATE (DTO בלבד)
+        // UPDATE
         // =====================
         [HttpPut]
         public int Update([FromBody] BookingUpdateDto dto)
@@ -70,7 +87,6 @@ namespace SherioWebApplication.Controllers
 
         // =====================
         // DELETE
-        // api/Bookings/Delete/5
         // =====================
         [HttpDelete("{id}")]
         public int Delete(int id)
