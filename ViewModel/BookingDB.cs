@@ -143,19 +143,33 @@ namespace ViewModel
         // =========================
         public bool IsRoomAvailable(int roomId, DateTime start, DateTime end)
         {
-            command.CommandText =
-                "SELECT COUNT(*) FROM Bookings " +
-                "WHERE RoomID=? AND NOT (EndDate<=? OR StartDate>=?)";
+            command.Parameters.Clear();
+
+            // 1. כמות יחידות
+            command.CommandText = "SELECT TotalUnits FROM Rooms WHERE ID=?";
+            command.Parameters.Add("@p1", OleDbType.Integer).Value = roomId;
+
+            object result = command.ExecuteScalar();
+
+            if (result == null || result == DBNull.Value)
+                return false;
+
+            int totalUnits = Convert.ToInt32(result);
 
             command.Parameters.Clear();
-            command.Parameters.Add("@room", OleDbType.Integer).Value = roomId;
-            command.Parameters.Add("@start", OleDbType.Date).Value = start;
-            command.Parameters.Add("@end", OleDbType.Date).Value = end;
 
-            // DO NOT open/close connection manually
-            int count = Convert.ToInt32(command.ExecuteScalar());
+            // 2. ספירת חפיפות (בלי Status בכלל כרגע כדי לבדוק יציבות)
+            command.CommandText =
+                "SELECT COUNT(*) FROM Bookings " +
+                "WHERE RoomID=? AND (StartDate < ? AND EndDate > ?)";
 
-            return count == 0;
+            command.Parameters.Add("@p1", OleDbType.Integer).Value = roomId;
+            command.Parameters.Add("@p2", OleDbType.Date).Value = end;
+            command.Parameters.Add("@p3", OleDbType.Date).Value = start;
+
+            int bookedCount = Convert.ToInt32(command.ExecuteScalar());
+
+            return bookedCount < totalUnits;
         }
     }
 }

@@ -214,21 +214,22 @@ namespace ApiInterface
             => DeleteAsync($"api/RoomImages/Delete/{id}");
 
         // ===================== RoomAvailability =====================
+
         public Task<RoomAvailabilityList> GetAllRoomAvailabilityAsync()
-            => GetAsync<RoomAvailabilityList>("api/RoomAvailability/GetAll");
+            => GetAsync<RoomAvailabilityList>("api/RoomAvailability");
 
         public Task<RoomAvailability?> GetRoomAvailabilityByIdAsync(int id)
-            => GetAsync<RoomAvailability?>($"api/RoomAvailability/GetById/{id}");
+            => GetAsync<RoomAvailability?>($"api/RoomAvailability/{id}");
 
         public Task<int> InsertRoomAvailabilityAsync(RoomAvailability ra)
-            => PostAsync("api/RoomAvailability/Insert", ra);
+            => PostAsync("api/RoomAvailability", ra);
 
         public Task<int> UpdateRoomAvailabilityAsync(RoomAvailability ra)
-            => PutAsync("api/RoomAvailability/Update", ra);
+            => PutAsync("api/RoomAvailability", ra);
 
         public Task<int> DeleteRoomAvailabilityAsync(int id)
-            => DeleteAsync($"api/RoomAvailability/Delete/{id}");
-
+            => DeleteAsync($"api/RoomAvailability/{id}");
+        
         // ===================== Bookings =====================
         public Task<BookingList> GetAllBookingsAsync()
             => GetAsync<BookingList>("api/Bookings");
