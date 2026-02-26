@@ -50,7 +50,35 @@ namespace SherioWebApplication.Controllers
             hotel.HasGym = dto.HasGym;
             hotel.HasRestaurant = dto.HasRestaurant;
 
-            hotel.MainHotelImageLink = dto.MainHotelImageLink;
+            // טיפול בתמונה
+            if (!string.IsNullOrEmpty(dto.MainHotelImageLink) &&
+                dto.MainHotelImageLink.Length > 300)
+            {
+                try
+                {
+                    byte[] imageBytes = Convert.FromBase64String(dto.MainHotelImageLink);
+
+                    string fileName = Guid.NewGuid().ToString() + ".jpg";
+                    string folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images");
+
+                    if (!Directory.Exists(folderPath))
+                        Directory.CreateDirectory(folderPath);
+
+                    string fullPath = Path.Combine(folderPath, fileName);
+
+                    System.IO.File.WriteAllBytes(fullPath, imageBytes);
+
+                    hotel.MainHotelImageLink = "/images/" + fileName;
+                }
+                catch
+                {
+                    return 0;
+                }
+            }
+            else
+            {
+                hotel.MainHotelImageLink = dto.MainHotelImageLink;
+            }
 
             var db = new HotelsDB();
             db.Update(hotel);

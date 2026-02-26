@@ -13,7 +13,7 @@
         private bool hasPool;
         private bool hasGym;
         private bool hasRestaurant;
-        private string mainHotelImageLink; // חדש
+        private string mainHotelImageLink; 
 
         public string Name { get => name; set => name = value; }
         public string PhoneNumber { get => phoneNumber; set => phoneNumber = value; }

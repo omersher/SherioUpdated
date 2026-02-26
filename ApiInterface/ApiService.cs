@@ -194,21 +194,13 @@ namespace ApiInterface
             => DeleteAsync($"api/Rooms/Delete/{id}");
 
 
-        // ===================== RoomImages =====================
+        // ================= ROOM IMAGES =================
+
         public Task<RoomImagesList> GetRoomImagesByRoomIdAsync(int roomId)
             => GetAsync<RoomImagesList>($"api/RoomImages/GetByRoomId/{roomId}");
 
-        public Task<RoomImagesList> GetAllRoomImagesAsync()
-            => GetAsync<RoomImagesList>("api/RoomImages/GetAll");
-
-        public Task<RoomImage?> GetRoomImageByIdAsync(int id)
-            => GetAsync<RoomImage?>($"api/RoomImages/GetById/{id}");
-
-        public Task<int> InsertRoomImageAsync(RoomImage ri)
-            => PostAsync("api/RoomImages/Insert", ri);
-
-        public Task<int> UpdateRoomImageAsync(RoomImage ri)
-            => PutAsync("api/RoomImages/Update", ri);
+        public Task<int> InsertRoomImageAsync(RoomImageInsertDto dto)
+            => PostAsync("api/RoomImages/Insert", dto);
 
         public Task<int> DeleteRoomImageAsync(int id)
             => DeleteAsync($"api/RoomImages/Delete/{id}");

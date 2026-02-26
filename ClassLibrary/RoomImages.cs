@@ -14,4 +14,10 @@
                    $"Room = {Room?.RoomName}, Image = {ImageLink}";
         }
     }
+
+    public class RoomImageInsertDto
+    {
+        public int RoomId { get; set; }
+        public string ImageUrl { get; set; }
+    }
 }

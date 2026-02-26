@@ -8,29 +8,25 @@ namespace SherioWebApplication.Controllers
     [Route("api/[controller]/[action]")]
     public class RoomImagesController : ControllerBase
     {
-        [HttpGet]
-        public RoomImagesList GetAll()
+        [HttpGet("{roomId}")]
+        public RoomImagesList GetByRoomId(int roomId)
         {
             RoomImagesDB db = new RoomImagesDB();
-            return db.SelectAll();
+            return db.SelectByRoomId(roomId);
         }
-
-        [HttpGet("{id}")]
-        public RoomImage? GetById(int id) => RoomImagesDB.SelectById(id);
 
         [HttpPost]
-        public int Insert([FromBody] RoomImage ri)
+        public int Insert([FromBody] RoomImageInsertDto dto)
         {
-            var db = new RoomImagesDB();
-            db.Insert(ri);
-            return db.SaveChanges();
-        }
+            RoomImagesDB db = new RoomImagesDB();
 
-        [HttpPut]
-        public int Update([FromBody] RoomImage ri)
-        {
-            var db = new RoomImagesDB();
-            db.Update(ri);
+            var image = new RoomImage
+            {
+                Room = RoomDB.SelectById(dto.RoomId),
+                ImageLink = dto.ImageUrl
+            };
+
+            db.Insert(image);
             return db.SaveChanges();
         }
 
@@ -39,17 +35,10 @@ namespace SherioWebApplication.Controllers
         {
             var ri = RoomImagesDB.SelectById(id);
             if (ri == null) return 0;
-            var db = new RoomImagesDB();
+
+            RoomImagesDB db = new RoomImagesDB();
             db.Delete(ri);
             return db.SaveChanges();
         }
-
-        [HttpGet("{roomId}")]
-        public RoomImagesList GetByRoomId(int roomId)
-        {
-            RoomImagesDB db = new RoomImagesDB();
-            return db.SelectByRoomId(roomId);
-        }
-
     }
 }

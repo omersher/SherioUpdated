@@ -52,10 +52,8 @@ namespace ApiInterface
         Task<int> DeleteRoomAsync(int id);
 
         // ---- RoomImages ----
-        Task<RoomImagesList> GetAllRoomImagesAsync();
-        Task<RoomImage?> GetRoomImageByIdAsync(int id);
-        Task<int> InsertRoomImageAsync(RoomImage ri);
-        Task<int> UpdateRoomImageAsync(RoomImage ri);
+        Task<RoomImagesList> GetRoomImagesByRoomIdAsync(int roomId);
+        Task<int> InsertRoomImageAsync(RoomImageInsertDto dto);
         Task<int> DeleteRoomImageAsync(int id);
 
         // ---- RoomAvailability ----

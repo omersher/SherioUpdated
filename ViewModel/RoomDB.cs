@@ -56,7 +56,7 @@ namespace ViewModel
             if (reader["Bathrooms"] != DBNull.Value)
                 r.Bathrooms = Convert.ToInt32(reader["Bathrooms"]);
 
-            if (reader["TotalUnits"] != DBNull.Value)          // ⭐ חדש
+            if (reader["TotalUnits"] != DBNull.Value)
                 r.TotalUnits = Convert.ToInt32(reader["TotalUnits"]);
 
             r.HasKitchen = reader["HasKitchen"] != DBNull.Value && Convert.ToBoolean(reader["HasKitchen"]);
