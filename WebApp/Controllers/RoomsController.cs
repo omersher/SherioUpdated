@@ -8,10 +8,6 @@ namespace SherioWebApplication.Controllers
     [Route("api/[controller]/[action]")]
     public class RoomsController : ControllerBase
     {
-        // =========================
-        // GET ALL ROOMS
-        // api/Rooms/GetAll
-        // =========================
         [HttpGet]
         public RoomList GetAll()
         {
@@ -19,10 +15,6 @@ namespace SherioWebApplication.Controllers
             return db.SelectAll();
         }
 
-        // =========================
-        // GET ROOMS BY HOTEL
-        // api/Rooms/GetByHotel/5
-        // =========================
         [HttpGet("{hotelId}")]
         public RoomList GetByHotel(int hotelId)
         {
@@ -30,20 +22,12 @@ namespace SherioWebApplication.Controllers
             return db.SelectByHotel(hotelId);
         }
 
-        // =========================
-        // GET ROOM BY ID
-        // api/Rooms/GetById/3
-        // =========================
         [HttpGet("{id}")]
         public Room? GetById(int id)
         {
             return RoomDB.SelectById(id);
         }
 
-        // =========================
-        // INSERT ROOM
-        // api/Rooms/Insert
-        // =========================
         [HttpPost]
         public int Insert([FromBody] Room r)
         {
@@ -52,10 +36,6 @@ namespace SherioWebApplication.Controllers
             return db.SaveChanges();
         }
 
-        // =========================
-        // UPDATE ROOM (DTO בלבד!)
-        // api/Rooms/Update
-        // =========================
         [HttpPut]
         public int Update([FromBody] RoomUpdateDto dto)
         {
@@ -80,10 +60,6 @@ namespace SherioWebApplication.Controllers
             return db.SaveChanges();
         }
 
-        // =========================
-        // DELETE ROOM
-        // api/Rooms/Delete/3
-        // =========================
         [HttpDelete("{id}")]
         public int Delete(int id)
         {

@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Model.BaseEntity" Collapsed="true">
+    <Position X="18.5" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>BaseEntity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.Booking" Collapsed="true">
+    <Position X="16.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAGAgAIAAAAACAAAAggAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Booking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.BookingUpdateDto" Collapsed="true">
+    <Position X="18" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAEAAAIAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Booking.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.BookingList" Collapsed="true">
+    <Position X="16.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>BookingList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.City" Collapsed="true">
+    <Position X="20.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAIAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>City.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.CityList" Collapsed="true">
+    <Position X="19.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CityList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.Hotel" Collapsed="true">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAACCAACAAwAAsAYAASAQAAFAEQYAAIQCAAAAAABA=</HashCode>
+      <FileName>Hotel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.HotelUpdateDto" Collapsed="true">
+    <Position X="18" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAECACAAACAAQAAAAIAAQAQAAAAAAAAAAQCAAAAAABA=</HashCode>
+      <FileName>Hotel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.HotelImage" Collapsed="true">
+    <Position X="16.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAABAAAAEAAAAAAAAAAAAAAIAAAACAAAAAAA=</HashCode>
+      <FileName>HotelImage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.HotelImagesList" Collapsed="true">
+    <Position X="21.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HotelImageList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.HotelList" Collapsed="true">
+    <Position X="16.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>HotelList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.Owner" Collapsed="true">
+    <Position X="11.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEEAAAABAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Owner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.OwnerList" Collapsed="true">
+    <Position X="19.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OwnerList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.Payment" Collapsed="true">
+    <Position X="18.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAIIAAECCAAAAiEAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Payment.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.PaymentList" Collapsed="true">
+    <Position X="21.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PaymentList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.Room" Collapsed="true">
+    <Position X="18.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAEEEEABAABAAAAWEAAAEAAgAAAAAAACAAAAAJEgBBA=</HashCode>
+      <FileName>Room.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomUpdateDto" Collapsed="true">
+    <Position X="16.25" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAACEAABAAAAAAAQAAAAAAAgAAAAAAACAAQAABAgBAA=</HashCode>
+      <FileName>Room.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomAvailability" Collapsed="true">
+    <Position X="9.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAACAAAAAgAEACAAAAAgAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>RoomAvailability.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomAvailabilityList" Collapsed="true">
+    <Position X="16.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RoomAvailabilityList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomImage" Collapsed="true">
+    <Position X="14" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEABAAAAAQAAAAAAIAAAACAAAAAAA=</HashCode>
+      <FileName>RoomImages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomImageInsertDto" Collapsed="true">
+    <Position X="18" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RoomImages.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomImagesList" Collapsed="true">
+    <Position X="19.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RoomImagesList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.RoomList" Collapsed="true">
+    <Position X="21.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RoomList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.User" Collapsed="true">
+    <Position X="11.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAgAAAAKAAAIAkAACAAAAAAAAAAgAgAAIAIAAAAAA=</HashCode>
+      <FileName>User.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Model.UserList" Collapsed="true">
+    <Position X="18" Y="11" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>UserList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="System.Collections.Generic.List&lt;T&gt;" Collapsed="true">
+    <Position X="14.25" Y="8" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

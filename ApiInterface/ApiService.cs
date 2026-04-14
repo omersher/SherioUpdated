@@ -1,9 +1,9 @@
 ﻿using Model;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
 
 namespace ApiInterface
 {
@@ -12,11 +12,10 @@ namespace ApiInterface
         private readonly HttpClient client;
         private readonly string uri;
 
-        // בנאי ברירת מחדל
         public ApiService()
         {
-            uri = "http://localhost:5064";
             client = new HttpClient();
+            uri = "http://localhost:5064";
         }
 
         public ApiService(HttpClient client, string baseUri)
@@ -25,7 +24,6 @@ namespace ApiInterface
             this.uri = baseUri ?? throw new ArgumentNullException(nameof(baseUri));
         }
 
-        // ---------- Helpers ----------
         private static async Task<T> ReadAsAsync<T>(HttpResponseMessage resp)
         {
             resp.EnsureSuccessStatusCode();
@@ -38,10 +36,6 @@ namespace ApiInterface
         private async Task<T> GetAsync<T>(string path)
         {
             var fullUrl = $"{uri.TrimEnd('/')}/{path}";
-            Console.WriteLine("==== CALLING URL ====");
-            Console.WriteLine(fullUrl);
-            Console.WriteLine("=====================");
-
             var response = await client.GetAsync(fullUrl);
 
             if (!response.IsSuccessStatusCode)
@@ -63,27 +57,50 @@ namespace ApiInterface
 
         private async Task<int> PostAsync<TBody>(string path, TBody body)
         {
-            var resp = await client.PostAsJsonAsync($"{uri}/{path}", body);
+            var fullUrl = $"{uri.TrimEnd('/')}/{path}";
+            var resp = await client.PostAsJsonAsync(fullUrl, body);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                var error = await resp.Content.ReadAsStringAsync();
+                throw new Exception(
+                    $"HTTP ERROR {(int)resp.StatusCode} ({resp.StatusCode})\n" +
+                    $"URL: {fullUrl}\n" +
+                    $"BODY: {System.Text.Json.JsonSerializer.Serialize(body)}\n" +
+                    $"RESPONSE: {error}");
+            }
+
             return await ReadAsAsync<int>(resp);
         }
-         
+
         private async Task<int> PutAsync<TBody>(string path, TBody body)
         {
-            var resp = await client.PutAsJsonAsync($"{uri}/{path}", body);
+            var fullUrl = $"{uri.TrimEnd('/')}/{path}";
+            var resp = await client.PutAsJsonAsync(fullUrl, body);
+
+            if (!resp.IsSuccessStatusCode)
+            {
+                var error = await resp.Content.ReadAsStringAsync();
+                throw new Exception(
+                    $"HTTP ERROR {(int)resp.StatusCode} ({resp.StatusCode})\n" +
+                    $"URL: {fullUrl}\n" +
+                    $"BODY: {System.Text.Json.JsonSerializer.Serialize(body)}\n" +
+                    $"RESPONSE: {error}");
+            }
+
             return await ReadAsAsync<int>(resp);
         }
 
         private async Task<int> DeleteAsync(string path)
         {
-            var resp = await client.DeleteAsync($"{uri}/{path}");
+            var resp = await client.DeleteAsync($"{uri.TrimEnd('/')}/{path}");
             return await ReadAsAsync<int>(resp);
         }
 
 
-
         // ===================== Cities =====================
         public Task<CityList> GetAllCitiesAsync()
-            => GetAsync<CityList>("api/City/GetAll");
+                    => GetAsync<CityList>("api/City/GetAll");
 
         public Task<City?> GetCityByIdAsync(int id)
                 => GetAsync<City?>($"api/City/GetById/{id}");
@@ -221,7 +238,7 @@ namespace ApiInterface
 
         public Task<int> DeleteRoomAvailabilityAsync(int id)
             => DeleteAsync($"api/RoomAvailability/{id}");
-        
+
         // ===================== Bookings =====================
         public Task<BookingList> GetAllBookingsAsync()
             => GetAsync<BookingList>("api/Bookings");
@@ -257,20 +274,5 @@ namespace ApiInterface
         public Task<int> DeletePaymentAsync(int id)
             => DeleteAsync($"api/Payments/Delete/{id}");
 
-        // ===================== Reviews =====================
-        public Task<ReviewList> GetAllReviewsAsync()
-            => GetAsync<ReviewList>("api/Reviews/GetAll");
-
-        public Task<Review?> GetReviewByIdAsync(int id)
-            => GetAsync<Review?>($"api/Reviews/GetById/{id}");
-
-        public Task<int> InsertReviewAsync(Review r)
-            => PostAsync("api/Reviews/Insert", r);
-
-        public Task<int> UpdateReviewAsync(Review r)
-            => PutAsync("api/Reviews/Update", r);
-
-        public Task<int> DeleteReviewAsync(int id)
-            => DeleteAsync($"api/Reviews/Delete/{id}");
     }
 }

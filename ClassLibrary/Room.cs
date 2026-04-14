@@ -25,7 +25,6 @@
         public bool HasParking { get => hasParking; set => hasParking = value; }
         public bool HasBalcony { get => hasBalcony; set => hasBalcony = value; }
         public bool HasLivingRoom { get => hasLivingRoom; set => hasLivingRoom = value; }
-        public string MainRoomImageLink { get => mainRoomImageLink; set => mainRoomImageLink = value; }
 
         public int TotalUnits
         {
@@ -39,7 +38,7 @@
                    $"Room = {RoomName}, Hotel = {Hotel?.Name}, " +
                    $"AdultRate = {AdultRate}, ChildRate = {ChildRate}, " +
                    $"Bedrooms = {Bedrooms}, Bathrooms = {Bathrooms}, " +
-                   $"TotalUnits = {TotalUnits}, Main Pic URL:{MainRoomImageLink}";
+                   $"TotalUnits = {TotalUnits}";
         }
     }
 
@@ -57,8 +56,5 @@
         public bool HasBalcony { get; set; }
         public bool HasLivingRoom { get; set; }
         public int TotalUnits { get; set; }
-        public string MainRoomImage { get; set; }
-
     }
-
 }

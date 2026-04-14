@@ -145,7 +145,10 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@pool", h.HasPool));
             cmd.Parameters.Add(new OleDbParameter("@gym", h.HasGym));
             cmd.Parameters.Add(new OleDbParameter("@rest", h.HasRestaurant));
+
+            // ✅ זה מה שהיה חסר
             cmd.Parameters.Add(new OleDbParameter("@img", h.MainHotelImageLink));
+
             cmd.Parameters.Add(new OleDbParameter("@id", h.Id));
         }
     }

@@ -78,11 +78,5 @@ namespace ApiInterface
         Task<int> UpdatePaymentAsync(Payment p);
         Task<int> DeletePaymentAsync(int id);
 
-        // ---- Reviews ----
-        Task<ReviewList> GetAllReviewsAsync();
-        Task<Review?> GetReviewByIdAsync(int id);
-        Task<int> InsertReviewAsync(Review r);
-        Task<int> UpdateReviewAsync(Review r);
-        Task<int> DeleteReviewAsync(int id);
     }
 }
