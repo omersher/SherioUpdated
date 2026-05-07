@@ -1,5 +1,4 @@
-﻿// FILE: RoomAvailabilityDB.cs
-using Model;
+﻿using Model;
 using System;
 using System.Data.OleDb;
 
@@ -7,19 +6,12 @@ namespace ViewModel
 {
     public class RoomAvailabilityDB : BaseDB
     {
-        // =========================
-        // SELECT ALL
-        // =========================
         public RoomAvailabilityList SelectAll()
         {
             command.CommandText = "SELECT * FROM RoomAvailability";
             command.Parameters.Clear();
             return new RoomAvailabilityList(base.Select());
         }
-
-        // =========================
-        // SELECT BY ID
-        // =========================
         public static RoomAvailability SelectById(int id)
         {
             RoomAvailabilityDB db = new RoomAvailabilityDB();
@@ -30,10 +22,6 @@ namespace ViewModel
             RoomAvailabilityList list = new RoomAvailabilityList(db.Select());
             return list.Count > 0 ? list[0] : null;
         }
-
-        // =========================
-        // CREATE MODEL
-        // =========================
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
             RoomAvailability ra = entity as RoomAvailability ?? new RoomAvailability();
@@ -51,12 +39,8 @@ namespace ViewModel
 
             return ra;
         }
-
         public override BaseEntity NewEntity() => new RoomAvailability();
 
-        // =========================
-        // INSERT
-        // =========================
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
             RoomAvailability ra = (RoomAvailability)entity;
@@ -69,10 +53,6 @@ namespace ViewModel
             cmd.Parameters.Add("@start", OleDbType.Date).Value = ra.StartDate;
             cmd.Parameters.Add("@end", OleDbType.Date).Value = ra.EndDate;
         }
-
-        // =========================
-        // UPDATE
-        // =========================
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             RoomAvailability ra = (RoomAvailability)entity;
@@ -86,10 +66,6 @@ namespace ViewModel
             cmd.Parameters.Add("@end", OleDbType.Date).Value = ra.EndDate;
             cmd.Parameters.Add("@id", OleDbType.Integer).Value = ra.Id;
         }
-
-        // =========================
-        // DELETE
-        // =========================
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             RoomAvailability ra = (RoomAvailability)entity;

@@ -24,10 +24,6 @@ namespace ViewModel
             PaymentList list = new PaymentList(db.Select());
             return list.Count > 0 ? list[0] : null;
         }
-
-        // =========================
-        // CREATE MODEL
-        // =========================
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
             Payment p = entity as Payment ?? new Payment();
@@ -53,10 +49,6 @@ namespace ViewModel
         }
 
         public override BaseEntity NewEntity() => new Payment();
-
-        // =========================
-        // INSERT
-        // =========================
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
             if (entity is not Payment p) return;
@@ -73,10 +65,6 @@ namespace ViewModel
             cmd.Parameters.Add("@method", OleDbType.VarChar).Value = p.PayMethod;
             cmd.Parameters.Add("@created", OleDbType.Date).Value = p.CreatedAt;
         }
-
-        // =========================
-        // UPDATE
-        // =========================
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             if (entity is not Payment p) return;
@@ -94,9 +82,6 @@ namespace ViewModel
             cmd.Parameters.Add("@id", OleDbType.Integer).Value = p.Id;
         }
 
-        // =========================
-        // DELETE
-        // =========================
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             if (entity is not Payment p) return;

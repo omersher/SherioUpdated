@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ViewModel.BaseDB" Collapsed="true">
+    <Position X="18" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAEAAAIACAAgICAABAAACAhUAIAAAAAAAQEASAAA=</HashCode>
+      <FileName>BaseDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.BookingDB" Collapsed="true">
+    <Position X="12.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAKACAAAAAAAAAAAAAgAAMAAAAAAAAAACAAA=</HashCode>
+      <FileName>BookingDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.CityDB" Collapsed="true">
+    <Position X="15.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>CityDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.HotelsDB" Collapsed="true">
+    <Position X="20.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAIAAIAAAAAAACAAA=</HashCode>
+      <FileName>HotelDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.HotelImagesDB" Collapsed="true">
+    <Position X="11.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACACAAAAAAAAAAAgAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>HotelImagesDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.OwnerDB" Collapsed="true">
+    <Position X="14.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>OwnerDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.PaymentDB" Collapsed="true">
+    <Position X="18" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>PaymentDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.RoomAvailabilityDB" Collapsed="true">
+    <Position X="13.5" Y="2.75" Width="1.5" />
+    <InheritanceLine Type="ViewModel.BaseDB" FixedToPoint="true">
+      <Path>
+        <Point X="18.75" Y="1.062" />
+        <Point X="18.75" Y="1.375" />
+        <Point X="14.312" Y="1.375" />
+        <Point X="14.312" Y="2.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>RoomAvailabilityDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.RoomDB" Collapsed="true">
+    <Position X="10.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAKACAAAAAAAAAAAAAgAAIAAAAAAAAAACAAA=</HashCode>
+      <FileName>RoomDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.RoomImagesDB" Collapsed="true">
+    <Position X="17" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAMAAAAAAAAAACAAA=</HashCode>
+      <FileName>RoomImagesDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ViewModel.UserDB" Collapsed="true">
+    <Position X="19.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAKACAAAAAAAAAAAAAgAAIAAAAAAQAAACAAA=</HashCode>
+      <FileName>UserDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

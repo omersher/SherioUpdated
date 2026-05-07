@@ -6,19 +6,12 @@ namespace ViewModel
 {
     public class BookingDB : BaseDB
     {
-        // =========================
-        // SELECT ALL
-        // =========================
         public BookingList SelectAll()
         {
             command.CommandText = "SELECT * FROM Bookings";
             command.Parameters.Clear();
             return new BookingList(base.Select());
         }
-
-        // =========================
-        // SELECT BY ID
-        // =========================
         public static Booking SelectById(int id)
         {
             BookingDB db = new BookingDB();
@@ -29,10 +22,6 @@ namespace ViewModel
             BookingList list = new BookingList(db.Select());
             return list.Count > 0 ? list[0] : null;
         }
-
-        // =========================
-        // CREATE MODEL
-        // =========================
         protected override BaseEntity CreateModel(BaseEntity entity)
         {
             Booking b = entity as Booking ?? new Booking();
@@ -68,9 +57,6 @@ namespace ViewModel
 
         public override BaseEntity NewEntity() => new Booking();
 
-        // =========================
-        // INSERT
-        // =========================
         protected override void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd)
         {
             Booking b = (Booking)entity;
@@ -92,9 +78,6 @@ namespace ViewModel
             cmd.Parameters.Add("@status", OleDbType.VarChar).Value = b.Status.ToString();
         }
 
-        // =========================
-        // UPDATE
-        // =========================
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             Booking b = (Booking)entity;
@@ -110,9 +93,6 @@ namespace ViewModel
             cmd.Parameters.Add("@id", OleDbType.Integer).Value = b.Id;
         }
 
-        // =========================
-        // DELETE
-        // =========================
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             Booking b = (Booking)entity;
@@ -122,9 +102,6 @@ namespace ViewModel
             cmd.Parameters.Add("@id", OleDbType.Integer).Value = b.Id;
         }
 
-        // =========================
-        // SELECT BY HOTEL
-        // =========================
         public BookingList SelectByHotel(int hotelId)
         {
             command.CommandText =
@@ -137,10 +114,6 @@ namespace ViewModel
 
             return new BookingList(base.Select());
         }
-
-        // =========================
-        // CHECK ROOM AVAILABILITY 🔥
-        // =========================
         public bool IsRoomAvailable(int roomId, DateTime start, DateTime end)
         {
             command.Parameters.Clear();

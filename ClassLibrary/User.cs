@@ -14,8 +14,6 @@
         public string Email { get => email; set => email = value; }
         public string Phone { get => phone; set => phone = value; }
         public string PassHash { get => passHash; set => passHash = value; }
-
-        // ⭐ OWNER FLAG ⭐
         public bool IsOwner { get => isOwner; set => isOwner = value; }
 
         public override string ToString()
@@ -35,3 +33,5 @@
         }
     }
 }
+
+

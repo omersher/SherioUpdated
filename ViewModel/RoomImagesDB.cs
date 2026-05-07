@@ -1,5 +1,4 @@
-﻿// FILE: RoomImagesDB.cs
-using Model;
+﻿using Model;
 using System;
 using System.Data.OleDb;
 

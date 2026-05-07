@@ -25,12 +25,7 @@
         public bool HasParking { get => hasParking; set => hasParking = value; }
         public bool HasBalcony { get => hasBalcony; set => hasBalcony = value; }
         public bool HasLivingRoom { get => hasLivingRoom; set => hasLivingRoom = value; }
-
-        public int TotalUnits
-        {
-            get => totalUnits;
-            set => totalUnits = value;
-        }
+        public int TotalUnits{get => totalUnits;set => totalUnits = value; }
 
         public override string ToString()
         {

@@ -4,10 +4,7 @@ namespace Model
 {
     public enum BookingStatus
     {
-        Pending,
-        Confirmed,
-        CheckedOut,
-        Cancelled
+        Pending,Confirmed,CheckedOut,Cancelled
     }
 
     public class Booking : BaseEntity
@@ -42,7 +39,6 @@ namespace Model
         public int AdultCount { get; set; }
         public int ChildCount { get; set; }
 
-        // IMPORTANT: keep enum but stored as string in DB
         public BookingStatus Status { get; set; } = BookingStatus.Pending;
 
         private void ValidateDates()

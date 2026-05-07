@@ -9,18 +9,15 @@ namespace ViewModel
 {
     public abstract class BaseDB
     {
-        // ---- Connection ----
-        protected static readonly string connectionString =
-            @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
+        protected static readonly string connectionString
+            = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" +
             System.IO.Path.GetFullPath(
-                System.Reflection.Assembly.GetExecutingAssembly().Location +
-                "/../../../../../ViewModel/sherio.accdb");
+                System.Reflection.Assembly.GetExecutingAssembly().Location + "/../../../../../ViewModel/sherio.accdb");
 
         protected static OleDbConnection connection;
         protected OleDbCommand command;
         protected OleDbDataReader reader;
 
-        // ✅ כלי עזר ל-NULL → DBNull
         protected static object DbVal(object value) => value ?? DBNull.Value;
 
         public BaseDB()
@@ -29,10 +26,8 @@ namespace ViewModel
             command = new OleDbCommand { Connection = connection };
         }
 
-        // ישות חדשה לכל DB יורש
         public abstract BaseEntity NewEntity();
 
-        // ---- SELECT (sync) ----
         protected List<BaseEntity> Select()
         {
             var list = new List<BaseEntity>();
@@ -56,57 +51,54 @@ namespace ViewModel
             finally
             {
                 reader?.Close();
-                // אם אתה רוצה לסגור חיבור בכל פעם, בטל הערה בשורה הבאה:
-                // if (connection.State == ConnectionState.Open) connection.Close();
             }
             return list;
         }
 
-        // ---- SELECT (async) ----
         protected async Task<List<BaseEntity>> SelectAsync(string sqlStr)
         {
             var list = new List<BaseEntity>();
 
-            // נשתמש בחיבור חדש מקומי (לא לשתף חיבור אחד בין Threads)
-            using (var localConn = new OleDbConnection(connectionString))
-            using (var localCmd = new OleDbCommand(sqlStr, localConn))
+            using var localConn = new OleDbConnection(connectionString);
+            using var localCmd = new OleDbCommand(sqlStr, localConn);
+
+            try
             {
-                try
+                await localConn.OpenAsync();
+                using var r = await localCmd.ExecuteReaderAsync();
+
+                while (await r.ReadAsync())
                 {
-                    await localConn.OpenAsync();
-                    using (var r = await localCmd.ExecuteReaderAsync())
-                    {
-                        while (await r.ReadAsync())
-                        {
-                            // נרצה להשתמש ב-reader הקיים של המחלקה ל-CreateModel
-                            this.reader = (OleDbDataReader)r;
-                            BaseEntity entity = NewEntity();
-                            list.Add(CreateModel(entity));
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    throw new Exception(e.Message + "\nSQL:" + sqlStr);
-                }
-                finally
-                {
-                    this.reader = null;
+                    reader = (OleDbDataReader)r;
+                    BaseEntity entity = NewEntity();
+                    list.Add(CreateModel(entity));
                 }
             }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message + "\nSQL:" + sqlStr);
+            }
+            finally
+            {
+                reader = null;
+            }
+
             return list;
         }
 
-        // יצירת מודל מה-Reader
         protected virtual BaseEntity CreateModel(BaseEntity entity)
         {
             entity.Id = Convert.ToInt32(reader["id"]);
             return entity;
         }
 
-        // ---- Change tracking ----
         protected abstract void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd);
+        protected abstract void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd);
+        protected abstract void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd);
+
         public static List<ChangeEntity> deleted = new List<ChangeEntity>();
+        public static List<ChangeEntity> inserted = new List<ChangeEntity>();
+        public static List<ChangeEntity> updated = new List<ChangeEntity>();
 
         public virtual void Delete(BaseEntity entity)
         {
@@ -115,18 +107,12 @@ namespace ViewModel
                 deleted.Add(new ChangeEntity(CreateDeletedSQL, entity));
         }
 
-        protected abstract void CreateInsertdSQL(BaseEntity entity, OleDbCommand cmd); // שימור שם המקור
-        public static List<ChangeEntity> inserted = new List<ChangeEntity>();
-
         public virtual void Insert(BaseEntity entity)
         {
             BaseEntity reqEntity = NewEntity();
             if (entity != null && entity.GetType() == reqEntity.GetType())
                 inserted.Add(new ChangeEntity(CreateInsertdSQL, entity));
         }
-
-        protected abstract void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd);
-        public static List<ChangeEntity> updated = new List<ChangeEntity>();
 
         public virtual void Update(BaseEntity entity)
         {
@@ -135,7 +121,6 @@ namespace ViewModel
                 updated.Add(new ChangeEntity(CreateUpdatedSQL, entity));
         }
 
-        // ---- SAVE CHANGES ----
         public int SaveChanges()
         {
             OleDbTransaction trans = null;
@@ -149,20 +134,17 @@ namespace ViewModel
                 trans = connection.BeginTransaction();
                 command.Transaction = trans;
 
-                // INSERT
                 foreach (var ce in inserted)
                 {
                     command.Parameters.Clear();
                     ce.CreateSql(ce.Entity, command);
                     recordsAffected += command.ExecuteNonQuery();
 
-                    // השבת Identity
                     command.Parameters.Clear();
                     command.CommandText = "SELECT @@IDENTITY";
                     ce.Entity.Id = Convert.ToInt32(command.ExecuteScalar());
                 }
 
-                // UPDATE
                 foreach (var ce in updated)
                 {
                     command.Parameters.Clear();
@@ -170,7 +152,6 @@ namespace ViewModel
                     recordsAffected += command.ExecuteNonQuery();
                 }
 
-                // DELETE
                 foreach (var ce in deleted)
                 {
                     command.Parameters.Clear();
@@ -182,7 +163,7 @@ namespace ViewModel
             }
             catch (Exception ex)
             {
-                try { trans?.Rollback(); } catch { /* ignore */ }
+                try { trans?.Rollback(); } catch { }
                 throw new Exception(ex.Message + "\nSQL:" + command.CommandText);
             }
             finally
@@ -190,15 +171,11 @@ namespace ViewModel
                 inserted.Clear();
                 updated.Clear();
                 deleted.Clear();
-
-                // אם צריך: סגור את החיבור כאן
-                // if (connection.State == ConnectionState.Open) connection.Close();
             }
 
             return recordsAffected;
         }
 
-        // ---- ChangeEntity ----
         public class ChangeEntity
         {
             public BaseEntity Entity { get; set; }

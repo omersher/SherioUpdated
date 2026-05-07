@@ -64,7 +64,10 @@ namespace ViewModel
             return r;
         }
 
-        public override BaseEntity NewEntity() => new Room();
+        public override BaseEntity NewEntity()
+        {
+            return new Room();
+        }
 
         protected override void CreateDeletedSQL(BaseEntity entity, OleDbCommand cmd)
         {
@@ -81,10 +84,10 @@ namespace ViewModel
             cmd.CommandText =
                 "INSERT INTO Rooms " +
                 "(HotelID, RoomName, AdultRate, ChildRate, Bedrooms, Bathrooms, HasKitchen, HasParking, HasBalcony, HasLivingRoom, TotalUnits) " +
-                "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                "VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 
             cmd.Parameters.Add(new OleDbParameter("@hotelId", DbVal(r.Hotel?.Id)));
-            cmd.Parameters.Add(new OleDbParameter("@name", r.RoomName));
+            cmd.Parameters.Add(new OleDbParameter("@name", DbVal(r.RoomName)));
             cmd.Parameters.Add(new OleDbParameter("@aRate", r.AdultRate));
             cmd.Parameters.Add(new OleDbParameter("@cRate", r.ChildRate));
             cmd.Parameters.Add(new OleDbParameter("@beds", r.Bedrooms));
@@ -102,11 +105,11 @@ namespace ViewModel
 
             cmd.CommandText =
                 "UPDATE Rooms SET " +
-                "HotelID=?, RoomName=?, AdultRate=?, ChildRate=?, Bedrooms=?, Bathrooms=?, HasKitchen=?, HasParking=?, HasBalcony=?, HasLivingRoom=?, TotalUnits=?, " +
+                "HotelID=?, RoomName=?, AdultRate=?, ChildRate=?, Bedrooms=?, Bathrooms=?, HasKitchen=?, HasParking=?, HasBalcony=?, HasLivingRoom=?, TotalUnits=? " +
                 "WHERE ID=?";
 
             cmd.Parameters.Add(new OleDbParameter("@hotelId", DbVal(r.Hotel?.Id)));
-            cmd.Parameters.Add(new OleDbParameter("@name", r.RoomName));
+            cmd.Parameters.Add(new OleDbParameter("@name", DbVal(r.RoomName)));
             cmd.Parameters.Add(new OleDbParameter("@aRate", r.AdultRate));
             cmd.Parameters.Add(new OleDbParameter("@cRate", r.ChildRate));
             cmd.Parameters.Add(new OleDbParameter("@beds", r.Bedrooms));

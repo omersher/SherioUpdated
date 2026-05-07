@@ -1,5 +1,4 @@
-﻿// FILE: HotelsDB.cs
-using Model;
+﻿using Model;
 using System;
 using System.Data.OleDb;
 
@@ -7,8 +6,6 @@ namespace ViewModel
 {
     public class HotelsDB : BaseDB
     {
-        // ---------- SELECT ----------
-
         public HotelList SelectAll()
         {
             command.CommandText = "SELECT * FROM Hotels";
@@ -103,9 +100,6 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@img", h.MainHotelImageLink));
         }
 
-        // ---------- UPDATE ----------
-        // ❗ CityID ו-OwnerID מתעדכנים רק אם קיימים
-
         protected override void CreateUpdatedSQL(BaseEntity entity, OleDbCommand cmd)
         {
             if (entity is not Hotel h) return;
@@ -145,10 +139,7 @@ namespace ViewModel
             cmd.Parameters.Add(new OleDbParameter("@pool", h.HasPool));
             cmd.Parameters.Add(new OleDbParameter("@gym", h.HasGym));
             cmd.Parameters.Add(new OleDbParameter("@rest", h.HasRestaurant));
-
-            // ✅ זה מה שהיה חסר
             cmd.Parameters.Add(new OleDbParameter("@img", h.MainHotelImageLink));
-
             cmd.Parameters.Add(new OleDbParameter("@id", h.Id));
         }
     }

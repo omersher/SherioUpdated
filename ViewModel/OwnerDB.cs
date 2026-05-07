@@ -1,5 +1,4 @@
-﻿// FILE: OwnerDB.cs
-using Model;
+﻿using Model;
 using System;
 using System.Data.OleDb;
 
@@ -9,18 +8,7 @@ namespace ViewModel
     {
         public OwnerList SelectAll()
         {
-            command.CommandText = @"
-        SELECT 
-            o.ID, 
-            o.IsActive,
-            u.FullName,
-            u.Email,
-            u.Phone,
-            u.PassHash
-        FROM Owners AS o
-        INNER JOIN Users AS u ON o.ID = u.ID
-    ";
-
+            command.CommandText = "SELECT o.ID, o.IsActive, u.FullName, u.Email, u.Phone, u.PassHash FROM Owners AS o INNER JOIN Users AS u ON o.ID = u.ID";
             return new OwnerList(base.Select());
         }
 
