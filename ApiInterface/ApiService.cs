@@ -273,6 +273,6 @@ namespace ApiInterface
 
         public Task<int> DeletePaymentAsync(int id)
             => DeleteAsync($"api/Payments/Delete/{id}");
-
+        
     }
 }

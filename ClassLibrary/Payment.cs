@@ -34,7 +34,7 @@ namespace Model
             set => payMethod = value;
         }
 
-        public DateTime CreatedAt
+        public DateTime CreatedAtx
         {
             get => createdAt;
             set => createdAt = value;
