@@ -8,7 +8,7 @@ namespace Model
         private int bookingID;
         private decimal amount;
         private string payMethod;
-        private DateTime createdAt;
+        private DateTime createdAt = DateTime.Now;
 
         public int UserID
         {
@@ -34,7 +34,7 @@ namespace Model
             set => payMethod = value;
         }
 
-        public DateTime CreatedAtx
+        public DateTime CreatedAt
         {
             get => createdAt;
             set => createdAt = value;
